@@ -1,45 +1,66 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const cors = require('cors'); 
+const cors = require('cors');
+const session = require('express-session'); // Add this line
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const adminRoutes = require('./routes/adminroutes');
-const pmRoutes = require('./routes/pmroutes'); 
+const pmRoutes = require('./routes/pmroutes');
 
-/* CONFIGURATIONS */
 require('dotenv').config();
 const PORT = process.env.PORT || 4004;
 
-/* EXPRESS CONFIGURATIONS */
 const app = express();
 
-
 const corsOptions = {
-  origin: 'http://localhost:3000', // frontend server
-  credentials: true, // This allows the session cookie to be sent back and forth
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  origin: 'http://localhost:3000',
+  credentials: true,
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
-
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+// Add the express-session middleware
+app.use(session({
+  secret: 'your-secret-key', // Change this to a strong secret
+  resave: false,
+  saveUninitialized: false,
+}));
+
 app.use("/uploads", express.static(__dirname + "/uploads"));
-app.post("/login",(req,res,next)=>{
-  res.send({msg:"Hello buddy"})
+
+// Example route to check session status
+app.get('/api/user', (req, res) => {
+  if (req.session.user) {
+    res.status(200).json({ user: req.session.user });
+  } else {
+    res.status(401).json({ message: 'Not authenticated' });
+  }
 });
 
+// Login route
+app.post("/login", (req, res, next) => {
+  // Validate user credentials (dummy logic for demonstration)
+  const { username, password } = req.body;
+  if (username === 'user' && password === 'password') {
+    // Store user data in the session
+    req.session.user = { username };
+    res.status(200).json({ message: 'Login successful' });
+  } else {
+    res.status(401).json({ message: 'Invalid credentials' });
+  }
+});
 
 app.use("/admin", adminRoutes);
 app.use('/projectmanager', pmRoutes);
 
-/* STARTUP */
-app.listen(PORT, () =>
-  console.log(`Server started on http://localhost:${PORT}`)
-);
-
-connectDB();
+connectDB().then(() => {
+  app.listen(PORT, () =>
+    console.log(`Server started on http://localhost:${PORT}`)
+  );
+}).catch(error => console.error('Error connecting to MongoDB:', error));

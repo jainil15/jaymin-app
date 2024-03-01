@@ -8,6 +8,7 @@ const protectUser = async (req, res, next, role) => {
     if (!_token) {
       return res.status(401).json({ message: "Token does not exist" });
     }
+
     const verifiedUser = jwt.verify(_token, process.env.JWT_SECRET);
 
     const root_user = await User.findOne({
@@ -41,7 +42,6 @@ const redirectToDashboard = (req, res, role) => {
       res.redirect("/auditor/dashboard");
       break;
     default:
-      // Handle the default case or invalid role here
       res.status(401).json({ message: "Invalid role" });
   }
 };

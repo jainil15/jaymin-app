@@ -87,17 +87,15 @@ function UserLogin() {
     }
   }
 
-
-
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <div className="flex flex-col items-center justify-center w-96 p-4 border border-gray-300 rounded">
+    <div className="flex flex-col items-center h-screen">
+      <div className="flex flex-col items-center justify-center w-full md:w-2/3 lg:w-1/2 xl:w-1/3 p-4 border border-gray-300 rounded">
         <h1 className="text-3xl font-bold mb-4">Login</h1>
         <form className="flex flex-col gap-4" onSubmit={loginUser}>
           <input
             type="email"
             placeholder="Email"
-            className="p-2 border border-gray-300 rounded"
+            className="p-2 border border-gray-300 rounded w-full text-lg"
             value={email}
             required
             onChange={(e) => setEmail(e.target.value)}
@@ -105,14 +103,14 @@ function UserLogin() {
           <input
             type="password"
             placeholder="Password"
-            className="p-2 border border-gray-300 rounded"
+            className="p-2 border border-gray-300 rounded w-full text-lg"
             value={password}
             required
             onChange={(e) => setPassword(e.target.value)}
           />
           <button
             type="submit"
-            className="bg-blue-500 text-white p-2 rounded"
+            className="bg-blue-500 text-white p-2 rounded w-full"
             disabled={loading}
           >
             {loading ? "Loading..." : "Login"}
@@ -125,6 +123,7 @@ function UserLogin() {
       <ToastContainer />
     </div>
   );
+  
 }
 
 export default UserLogin;

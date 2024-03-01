@@ -1,7 +1,7 @@
 // Home.jsx
 import React from 'react';
 import { Button } from "monday-ui-react-core";
-import Layout from './layout';
+import Layout from './Layout';
 
 
 const Home = () => {

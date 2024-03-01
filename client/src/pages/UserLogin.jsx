@@ -26,7 +26,7 @@ function UserLogin() {
           return;
         }
 
-        const response = await fetch("/admin/login", {
+        const response = await fetch("http://localhost:4004/admin/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),

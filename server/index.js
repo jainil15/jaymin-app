@@ -15,16 +15,24 @@ const PORT = process.env.PORT || 4004;
 /* EXPRESS CONFIGURATIONS */
 const app = express();
 
-app.use(cors());  // Enable CORS for all routes
+
+const corsOptions = {
+  origin: 'http://localhost:3000', // frontend server
+  credentials: true, // This allows the session cookie to be sent back and forth
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use("/uploads", express.static(__dirname + "/uploads"));
-app.use("/login",(req,res,next)=>{
+app.post("/login",(req,res,next)=>{
   res.send({msg:"Hello buddy"})
 });
+
 
 app.use("/admin", adminRoutes);
 app.use('/projectmanager', pmRoutes);

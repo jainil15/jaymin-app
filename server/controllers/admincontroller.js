@@ -103,7 +103,7 @@ const deleteUser = async (req, res) => {
 };
 
 
-// user login 
+
 // user login 
 const loginUser = async (req, res) => {
   try {
@@ -114,18 +114,28 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-    res.cookie("_token", token, { httpOnly: true });
-
-    // Include the user's role in the response
+    req.session.userId = user._id; // set session variable
 
     console.log('Request Body:', req.body);  
-    res.status(200).json({ message: "Logged in successfully", role: user.role });
+    res.status(200).json({ message: "Logged in successfully", role: user.role, user });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: `Error occurred ${error}` });
   }
 };
+
+// user logout
+
+const logoutUser = async (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      return res.status(500).json({ message: 'Could not log out, please try again.' });
+    }
+    res.clearCookie('connect.sid');
+    res.status(200).json({ message: 'Logged out successfully' });
+  });
+}
+
 
 module.exports = {
   addUser,
@@ -134,5 +144,6 @@ module.exports = {
   editUser,
   getUser,
   loginUser,
+  logoutUser,
 };
 

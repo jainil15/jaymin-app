@@ -2,12 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const session = require('express-session'); // Add this line
+const session = require('express-session');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const adminRoutes = require('./routes/adminroutes');
 const pmRoutes = require('./routes/pmroutes');
+const User = require('./models/usermodel');
 
 require('dotenv').config();
 const PORT = process.env.PORT || 4004;
@@ -25,35 +26,45 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-// Add the express-session middleware
 app.use(session({
-  secret: 'your-secret-key', // Change this to a strong secret
+  secret: 'c9df49d35eee83c2b2fdb67decac8be4fc2f9271679d1fa435bf32c4d89c33011344f468f7b7abc114fce83c8a7aec1d6c07d8f4a3aa0e6886bc7bd35a2f2040',
   resave: false,
   saveUninitialized: false,
 }));
 
 app.use("/uploads", express.static(__dirname + "/uploads"));
 
-// Example route to check session status
-app.get('/api/user', (req, res) => {
-  if (req.session.user) {
-    res.status(200).json({ user: req.session.user });
+app.get('/api/user', async (req, res) => { // make this an async function
+  if (req.session.userId) {
+    const user = await User.findById(req.session.userId); // find the user in the database
+    res.status(200).json({ userId: req.session.userId, name: user.name }); // include the user's name in the response
   } else {
     res.status(401).json({ message: 'Not authenticated' });
   }
 });
 
-// Login route
-app.post("/login", (req, res, next) => {
-  // Validate user credentials (dummy logic for demonstration)
-  const { username, password } = req.body;
-  if (username === 'user' && password === 'password') {
-    // Store user data in the session
-    req.session.user = { username };
-    res.status(200).json({ message: 'Login successful' });
-  } else {
-    res.status(401).json({ message: 'Invalid credentials' });
+app.post("/login", async (req, res, next) => {
+  // Validate user credentials
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user || user.password !== password) {
+    return res.status(401).json({ message: "Invalid credentials" });
   }
+
+  req.session.userId = user._id; 
+  res.status(200).json({ message: "Logged in successfully", role: user.role });
+});
+
+// Logout route
+app.post('/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      return res.status(500).json({ message: 'Could not log out, please try again.' });
+    }
+    res.clearCookie('connect.sid');
+    res.status(200).json({ message: 'Logged out successfully' });
+  });
 });
 
 app.use("/admin", adminRoutes);

@@ -9,13 +9,13 @@ const {
   getUsers,
   getUser,
   editUser,
-  loginUser, // Import loginUser function
+  loginUser,
+  logoutUser
 } = require("../controllers/admincontroller");
 
 /* ROUTES */
 router.post("/adduser", addUser);
 router.get("/getusers", getUsers);
-
 // Apply protectUser middleware to the login route
 router.post("/login", protectUser, loginUser);
 

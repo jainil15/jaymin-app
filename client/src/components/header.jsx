@@ -1,12 +1,37 @@
-import React from 'react';
-import logo from '../assets/logo.jpg';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.jpg';
 
 const Header = () => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState('Guest');
+
+  useEffect(() => {
+    fetch('http://localhost:4004/api/user', { 
+      credentials: 'include',
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.user) {
+        setIsLoggedIn(true);
+        setUsername(data.user.name);
+      }
+    });
+  }, []);
 
   const handleLogin = () => {
-    navigate('/UserLogin');
+    if (isLoggedIn) {
+      fetch('http://localhost:4004/logout', {
+        credentials: 'include',
+      })
+      .then(() => {
+        setIsLoggedIn(false);
+        setUsername('Guest');
+      });
+    } else {
+      navigate('/UserLogin');
+    }
   };
 
   return (
@@ -25,8 +50,12 @@ const Header = () => {
         className="bg-blue-500 text-white px-4 py-2 text-lg font-bold rounded self-start mt-2 w-28 h-35"
         onClick={handleLogin}
       >
-        Log In
+        {isLoggedIn ? 'Logout' : 'Log In'}
       </button>
+      <div className="flex flex-col items-center gap-2">
+        <img className="w-10 h-10 rounded-full" src="https://style.monday.com/static/media/person1.de30c8ee.png" alt="User avatar" />
+        <div className="font-bold text-lg">{username}</div>
+      </div>
     </header>
   );
 };

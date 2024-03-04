@@ -35,8 +35,8 @@ const Header = () => {
   };
 
   return (
-    <header className="flex justify-between gap-0">
-      <nav className="border border-gray-300 flex justify-between gap-5 text-lg p-2 m-2 w-full h-12">
+    <header className="flex justify-between items-center gap-0 h-16">
+      <nav className="border border-gray-300 flex justify-between gap-5 text-lg p-2 m-2 w-full h-full">
         <div className="flex justify-between gap-2 text-black font-semibold whitespace-nowrap leading-7 mb-2">
           <img className="w-12 h-9" src={logo} alt="logo" />
           <div className="font-inter self-start mt-3">Customer Support</div>
@@ -47,12 +47,12 @@ const Header = () => {
         </div>
       </nav>
       <button
-        className="bg-blue-500 text-white px-4 py-2 text-lg font-bold rounded self-start mt-2 w-28 h-35"
+        className="bg-blue-500 text-white px-4 py-2 text-lg font-bold rounded self-start mt-2 w-28"
         onClick={handleLogin}
       >
         {isLoggedIn ? 'Logout' : 'Log In'}
       </button>
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-2 h-full ml-2 mr-2">
         <img className="w-10 h-10 rounded-full" src="https://style.monday.com/static/media/person1.de30c8ee.png" alt="User avatar" />
         <div className="font-bold text-lg">{username}</div>
       </div>

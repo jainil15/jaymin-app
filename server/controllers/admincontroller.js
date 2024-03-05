@@ -1,14 +1,11 @@
 const User = require("../models/usermodel");
 const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
 
 /* ADD USER */
 const addUser = async (req, res) => {
   try {
-      const { name, role, email, password } = req.body;
-      console.log('ohhh.................................................');
-
-      console.log(name, role, email, password);
-      console.log('ohhh.................................................');
+    const { name, role, email, password } = req.body;
 
     const userExists = await User.findOne({ email });
 
@@ -16,11 +13,14 @@ const addUser = async (req, res) => {
       return res.status(409).json({ message: "User already exists" });
     }
 
+    // Hash the password before saving it to the database
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const userDoc = await User.create({
       name,
       role,
       email,
-      password,
+      password: hashedPassword,  // Save the hashed password
     });
 
     return res.status(200).json(userDoc);
@@ -102,15 +102,20 @@ const deleteUser = async (req, res) => {
   }
 };
 
-
-
-// user login 
+/* USER LOGIN */
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
-    if (!user || user.password !== password) {
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Compare the entered password with the hashed password in the database
+    const validPassword = await bcrypt.compare(password, user.password);
+
+    if (!validPassword) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
@@ -124,8 +129,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-// user logout
-
+/* USER LOGOUT */
 const logoutUser = async (req, res) => {
   req.session.destroy(err => {
     if (err) {
@@ -136,7 +140,6 @@ const logoutUser = async (req, res) => {
   });
 }
 
-
 module.exports = {
   addUser,
   getUsers,
@@ -146,4 +149,3 @@ module.exports = {
   loginUser,
   logoutUser,
 };
-

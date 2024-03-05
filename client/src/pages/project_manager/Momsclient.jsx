@@ -1,16 +1,16 @@
 // Momsclient.jsx
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Momsclient = () => {
-  const BASE_URI = 'http://localhost:4004/projectmanager'; // Change this to your server URI
+  const BASE_URI = "http://localhost:4004/projectmanager"; // Change this to your server URI
   const [momsclients, setMomsclients] = useState([]);
   const [formData, setFormData] = useState({
-    Date: '',
-    Duration: '',
-    MomLink: '',
-    Comments: '',
+    Date: "",
+    Duration: "",
+    MomLink: "",
+    Comments: "",
   });
   const [editingId, setEditingId] = useState(null);
 
@@ -26,7 +26,7 @@ const Momsclient = () => {
       !durationRegex.test(formData.Duration) || // Check if duration is a positive number
       !urlRegex.test(formData.MomLink) // Check if MomLink is a valid URL
     ) {
-      alert('All fields are required, and input validation failed!');
+      alert("All fields are required, and input validation failed!");
       return false;
     }
     return true;
@@ -37,7 +37,7 @@ const Momsclient = () => {
       const response = await axios.get(`${BASE_URI}/momsclients`);
       setMomsclients(response.data);
     } catch (error) {
-      console.error('Error fetching momsclients:', error);
+      console.error("Error fetching momsclients:", error);
     }
   };
 
@@ -45,18 +45,20 @@ const Momsclient = () => {
     try {
       if (validateForm()) {
         await axios.post(`${BASE_URI}/momsclients`, formData);
-        setFormData({ Date: '', Duration: '', MomLink: '', Comments: '' });
+        setFormData({ Date: "", Duration: "", MomLink: "", Comments: "" });
         fetchMomsclients();
       }
     } catch (error) {
-      console.error('Error adding momsclient:', error);
+      console.error("Error adding momsclient:", error);
     }
   };
 
   const editMomsclient = async (id) => {
     try {
       setEditingId(id);
-      const selectedMomsclient = momsclients.find((momsclient) => momsclient._id === id);
+      const selectedMomsclient = momsclients.find(
+        (momsclient) => momsclient._id === id
+      );
       setFormData({
         Date: selectedMomsclient.Date,
         Duration: selectedMomsclient.Duration,
@@ -64,7 +66,7 @@ const Momsclient = () => {
         Comments: selectedMomsclient.Comments,
       });
     } catch (error) {
-      console.error('Error editing momsclient:', error);
+      console.error("Error editing momsclient:", error);
     }
   };
 
@@ -72,12 +74,12 @@ const Momsclient = () => {
     try {
       if (editingId && validateForm()) {
         await axios.put(`${BASE_URI}/momsclients/${editingId}`, formData);
-        setFormData({ Date: '', Duration: '', MomLink: '', Comments: '' });
+        setFormData({ Date: "", Duration: "", MomLink: "", Comments: "" });
         setEditingId(null);
         fetchMomsclients();
       }
     } catch (error) {
-      console.error('Error saving edited momsclient:', error);
+      console.error("Error saving edited momsclient:", error);
     }
   };
 
@@ -86,7 +88,7 @@ const Momsclient = () => {
       await axios.delete(`${BASE_URI}/momsclients/${id}`);
       fetchMomsclients();
     } catch (error) {
-      console.error('Error deleting momsclient:', error);
+      console.error("Error deleting momsclient:", error);
     }
   };
 
@@ -96,69 +98,77 @@ const Momsclient = () => {
 
   return (
     <div className="container mx-auto mt-8 mb-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">Momsclients</h1>
 
       <form className="mb-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">
-              Date:
-            </label>
-            <input
-              type="datetime-local" // Use datetime-local input type
-              id="date"
-              name="date"
-              className="mt-1 p-2 border rounded-md w-full"
-              value={formData.Date}
-              onChange={(e) => setFormData({ ...formData, Date: e.target.value })}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="duration">
-              Duration: (In hours)
-            </label>
-            <input
-              type="number"
-              id="duration"
-              name="duration"
-              className="mt-1 p-2 border rounded-md w-full"
-              value={formData.Duration}
-              onChange={(e) => setFormData({ ...formData, Duration: e.target.value })}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="momLink">
-              MoM Link:
-            </label>
-            <input
-              type="url"
-              id="momLink"
-              name="momLink"
-              className="mt-1 p-2 border rounded-md w-full"
-              value={formData.MomLink}
-              onChange={(e) => setFormData({ ...formData, MomLink: e.target.value })}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="comments">
-              Comments:
-            </label>
-            <textarea
-              id="comments"
-              name="comments"
-              className="mt-1 p-2 border rounded-md w-full"
-              rows="4"
-              value={formData.Comments}
-              onChange={(e) => setFormData({ ...formData, Comments: e.target.value })}
-              required
-            />
-          </div>
-        </div>
+        <table className="table-auto w-full">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="px-4 py-2">Date</th>
+              <th className="px-4 py-2">Duration (In hours)</th>
+              <th className="px-4 py-2">MoM Link</th>
+              <th className="px-4 py-2">Comments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td className="border px-4 py-2">
+                <input
+                  type="datetime-local"
+                  id="date"
+                  name="date"
+                  className="mt-1 p-2 border rounded-md w-full"
+                  value={formData.Date}
+                  onChange={(e) =>
+                    setFormData({ ...formData, Date: e.target.value })
+                  }
+                  required
+                />
+              </td>
+              <td className="border px-4 py-2">
+                <input
+                  type="number"
+                  id="duration"
+                  name="duration"
+                  className="mt-1 p-2 border rounded-md w-full"
+                  value={formData.Duration}
+                  onChange={(e) =>
+                    setFormData({ ...formData, Duration: e.target.value })
+                  }
+                  required
+                />
+              </td>
+              <td className="border px-4 py-2">
+                <input
+                  type="url"
+                  id="momLink"
+                  name="momLink"
+                  className="mt-1 p-2 border rounded-md w-full"
+                  value={formData.MomLink}
+                  onChange={(e) =>
+                    setFormData({ ...formData, MomLink: e.target.value })
+                  }
+                  required
+                />
+              </td>
+              <td className="border px-4 py-2">
+                <textarea
+                  id="comments"
+                  name="comments"
+                  className="mt-1 p-2 border rounded-md w-full"
+                  rows="4"
+                  value={formData.Comments}
+                  onChange={(e) =>
+                    setFormData({ ...formData, Comments: e.target.value })
+                  }
+                  required
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 mx-1.5 hover:bg-blue-700"
+          className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 mx-1.5 mt-4 hover:bg-blue-700"
           onClick={addMomsclient}
         >
           Add Momsclient
@@ -179,12 +189,12 @@ const Momsclient = () => {
           {momsclients.map((momsclient) => (
             <tr key={momsclient._id}>
               <td className="border px-4 py-2">
-                {new Date(momsclient.Date).toLocaleString('en-US', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: 'numeric',
-                  minute: 'numeric',
+                {new Date(momsclient.Date).toLocaleString("en-US", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "numeric",
+                  minute: "numeric",
                 })}
               </td>
               <td className="border px-4 py-2">{momsclient.Duration}</td>

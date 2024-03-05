@@ -1,7 +1,8 @@
 const Resource = require('../models/resourcemodel');
 const ProjectUpdates = require('../models/projectupdates');
 const Momsclient = require('../models/momsclientmodel');
-const pahse = require('../models/phasemodel');
+const Phase = require('../models/phasemodel');
+const ApprovedPhase = require('../models/approvedPhasemodel');
 
 // Resource Management
 
@@ -190,109 +191,136 @@ const getMomsclient = async (req, res) => {
 
 
 //phase management
-
-const getAllPhases = async (req, res) => {
+const addPhase = async (req, res) => {
   try {
-    const phases = await Phase.find();
-    res.json(phases);
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
+    const { phaseNumber, numberOfResources, role, availabilityPercentage, duration } = req.body;
 
-const addNewPhase = async (req, res) => {
-  const { name, approvedTeam } = req.body;
-
-  try {
-    const newPhase = new Phase({ name, approvedTeam, resources: [] });
-    await newPhase.save();
-    res.json({ success: true, message: 'Phase added successfully' });
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
-
-const addRowToPhase = async (req, res) => {
-  const { id } = req.params;
-  const { numberOfResources, role, availabilityPercentage, duration } = req.body;
-
-  try {
-    const phase = await Phase.findById(id);
-    if (!phase) {
-      return res.status(404).json({ error: 'Phase not found' });
-    }
-
-    const newRow = {
+    const phaseDoc = await Phase.create({
+      phaseNumber,
       numberOfResources,
       role,
       availabilityPercentage,
       duration,
-    };
+    });
 
-    phase.resources.push(newRow);
-    phase.updatedAt = Date.now();
-    await phase.save();
-
-    res.json({ success: true, message: 'Row added to the phase successfully' });
+    return res.status(200).json(phaseDoc);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.log(error);
+    return res.status(500).json({ message: `Error occurred ${error}` });
   }
 };
 
-const getPhaseById = async (req, res) => {
-  const { id } = req.params;
-
+const getPhases = async (req, res) => {
   try {
-    const phase = await Phase.findById(id);
-    if (!phase) {
-      return res.status(404).json({ error: 'Phase not found' });
+    const phases = await Phase.find({});
+    return res.status(200).json(phases);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: `Error occurred ${error}` });
+  }
+};
+
+const getPhasesByPhaseNumber = async (req, res) => {
+  try {
+    const { phaseNumber } = req.params;
+    const phases = await Phase.find({ phaseNumber });
+    
+    if (!phases || phases.length === 0) {
+      return res.status(404).json({ message: `No phases found with phase number ${phaseNumber}` });
     }
 
-    res.json(phase);
+    return res.status(200).json(phases);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.log(error);
+    return res.status(500).json({ message: `Error occurred ${error}` });
   }
 };
 
-// Update phase by ID
-const updatePhaseById = async (req, res) => {
-  const { id } = req.params;
-  const { name } = req.body;
-
+const editPhase = async (req, res) => {
   try {
-    const phase = await Phase.findById(id);
-    if (!phase) {
-      return res.status(404).json({ error: 'Phase not found' });
+    const { id } = req.params;
+    const { phaseNumber, numberOfResources, role, availabilityPercentage, duration } = req.body;
+
+    const phaseDoc = await Phase.findByIdAndUpdate(
+      id,
+      {
+        phaseNumber,
+        numberOfResources,
+        role,
+        availabilityPercentage,
+        duration,
+      },
+      { new: true }
+    );
+
+    if (!phaseDoc) {
+      return res.status(404).json({ message: 'No phase found with this id' });
     }
 
-    phase.name = name;
-    phase.updatedAt = Date.now();
-    await phase.save();
-
-    res.json({ success: true, message: 'Phase updated successfully' });
+    return res.status(200).json(phaseDoc);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.log(error);
+    return res.status(500).json({ message: `Error occurred ${error}` });
   }
 };
 
-// Delete phase by ID
-const deletePhaseById = async (req, res) => {
-  const { id } = req.params;
+const deletePhase = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const phaseDoc = await Phase.findByIdAndDelete(id);
+    return res.status(200).json(phaseDoc);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: `Error occurred ${error}` });
+  }
+};
+
+
+
+//approved phase management
+
+const getAllPhases1 = async (req, res) => {
+  try {
+    const phases = await ApprovedPhase.find();
+    res.status(200).json(phases);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const addPhase1 = async (req, res) => {
+  const { phaseNumber, resources } = req.body;
+
+  const newPhase = new ApprovedPhase({
+    phaseNumber,
+    resources,
+  });
 
   try {
-    const phase = await Phase.findById(id);
-    if (!phase) {
-      return res.status(404).json({ error: 'Phase not found' });
-    }
-
-    await phase.remove();
-
-    res.json({ success: true, message: 'Phase deleted successfully' });
+    const savedPhase = await newPhase.save();
+    res.status(201).json(savedPhase);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(400).json({ message: error.message });
   }
 };
 
+
+const addResources = async (req, res) => {
+  try {
+    const { resources } = req.body;
+
+    const updatedPhase = await ApprovedPhase.findOneAndUpdate(
+      { phaseNumber: resources[0].phaseNumber },
+      { $push: { resources: { $each: resources } } },
+      { new: true, upsert: true }
+    );
+
+    res.status(200).json(updatedPhase);
+  } catch (error) {
+    console.error('Error adding resources:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 module.exports = {
   addResource,
   getResources,
@@ -308,13 +336,19 @@ module.exports = {
   deleteMomsclient,
   getMomsclient,
 
-  //phase management
-  getAllPhases,
-  addNewPhase,
-  addRowToPhase,
-  getPhaseById,
-  updatePhaseById,
-  deletePhaseById,
 
+
+  getAllPhases1,
+  addPhase1,
+  addResources,
+
+
+  // phase management
+
+  addPhase,
+  getPhases,
+  getPhasesByPhaseNumber,
+  editPhase,
+  deletePhase,
 };
 

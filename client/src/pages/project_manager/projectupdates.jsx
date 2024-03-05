@@ -82,45 +82,46 @@ const ProjectUpdates = () => {
   
   return (
     <div className="container mx-auto mt-8 mb-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">Project Updates</h1>
 
-      <table className="table-auto w-full mt-8 mx-auto mb-4">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="px-4 py-2 w-1/4">Date</th>
-            <th className="px-4 py-2 w-3/4">General Updates</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="border px-4 py-2">
-              <input
-                type="date"
-                className="mt-1 p-2 border rounded-md w-full"
-                value={formData.date}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                required
-              />
-            </td>
-            <td className="border px-4 py-2">
-              <textarea
-                className="mt-1 p-2 border rounded-md w-full"
-                rows="6"
-                value={formData.generalUpdates}
-                onChange={(e) => setFormData({ ...formData, generalUpdates: e.target.value })}
-                required
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <form className="mb-4">
+  <table className="table-auto w-full mt-8 mx-auto mb-4">
+    <thead>
+      <tr className="bg-gray-200">
+        <th className="px-4 py-2 w-1/4">Date</th>
+        <th className="px-4 py-2 w-3/4">General Updates</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td className="border px-4 py-2">
+          <input
+            type="date"
+            className="mt-1 p-2 border rounded-md w-full"
+            value={formData.date}
+            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+            required
+          />
+        </td>
+        <td className="border px-4 py-2">
+          <textarea
+            className="mt-1 p-2 border rounded-md w-full"
+            rows="6"
+            value={formData.generalUpdates}
+            onChange={(e) => setFormData({ ...formData, generalUpdates: e.target.value })}
+            required
+          />
+        </td>
 
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 mx-1.5 hover:bg-blue-700 mb-4"
-        onClick={addProjectUpdate}
-      >
-        Add Project Update
-      </button>
+      </tr>
+    </tbody>
+  </table>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2 mx-1.5 mt-6 hover:bg-blue-700 mb-4"
+            onClick={addProjectUpdate}
+          >
+            Add Project Update
+          </button>
+</form>
 
       <table className="table-auto w-full">
         <thead>

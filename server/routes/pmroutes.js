@@ -15,6 +15,18 @@ const {
   addMomsclient,
   updateMomsclient,
   deleteMomsclient,
+
+// routes for phase
+
+  addPhase,
+  getPhases,
+  getPhasesByPhaseNumber,
+  editPhase,
+  deletePhase,
+
+  getAllPhases1,
+  addPhase1,
+  addResources
 } = pmController;
 
 const router = express.Router();
@@ -31,17 +43,23 @@ router.put('/edit-project-update/:id', protectUser, editProjectUpdate);
 router.delete('/delete-project-update/:id', protectUser, deleteProjectUpdate);
 
 // Routes for MOMs client
-router.get('/momsclients', getMomsclients);
-router.post('/momsclients', addMomsclient);
-router.put('/momsclients/:id', updateMomsclient);
-router.delete('/momsclients/:id', deleteMomsclient);
+router.get('/momsclients', protectUser, getMomsclients);
+router.post('/momsclients', protectUser, addMomsclient);
+router.put('/momsclients/:id', protectUser, updateMomsclient);
+router.delete('/momsclients/:id', protectUser, deleteMomsclient);
 
 // pahase management routes
-router.get('/phases', pmController.getAllPhases);
-router.post('/phases', pmController.addNewPhase);
-router.post('/phases/:id/addRow', pmController.addRowToPhase);
-router.get('/phases/:id', pmController.getPhaseById);
-router.put('/phases/:id', pmController.updatePhaseById);
-router.delete('/phases/:id', pmController.deletePhaseById);
+router.post('/add-phase', protectUser, addPhase);
+router.get('/get-phases', protectUser, getPhases);
+router.get('/get-phases/:phaseNumber', protectUser, getPhasesByPhaseNumber);
+router.put('/edit-phase/:id', protectUser, editPhase);
+router.delete('/delete-phase/:id', protectUser, deletePhase);
+
+//approved phase management
+router.get('/get-phases1', protectUser, getAllPhases1);
+router.post('/add-phase1', protectUser, addPhase1);
+router.post('/resources', addResources);
+
 
 module.exports = router;
+

@@ -4,7 +4,7 @@ import axios from 'axios';
 const adduserform = () => {
   const [userData, setUserData] = useState({
     name: '',
-    role: 'Client',
+    role: 'Client', // Default role
     email: '',
     password: '',
   });

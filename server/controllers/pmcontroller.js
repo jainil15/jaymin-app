@@ -2,7 +2,6 @@ const Resource = require('../models/resourcemodel');
 const ProjectUpdates = require('../models/projectupdates');
 const Momsclient = require('../models/momsclientmodel');
 const Phase = require('../models/phasemodel');
-const ApprovedPhase = require('../models/approvedPhasemodel');
 
 // Resource Management
 
@@ -275,52 +274,6 @@ const deletePhase = async (req, res) => {
   }
 };
 
-
-
-//approved phase management
-
-const getAllPhases1 = async (req, res) => {
-  try {
-    const phases = await ApprovedPhase.find();
-    res.status(200).json(phases);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-const addPhase1 = async (req, res) => {
-  const { phaseNumber, resources } = req.body;
-
-  const newPhase = new ApprovedPhase({
-    phaseNumber,
-    resources,
-  });
-
-  try {
-    const savedPhase = await newPhase.save();
-    res.status(201).json(savedPhase);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
-
-
-const addResources = async (req, res) => {
-  try {
-    const { resources } = req.body;
-
-    const updatedPhase = await ApprovedPhase.findOneAndUpdate(
-      { phaseNumber: resources[0].phaseNumber },
-      { $push: { resources: { $each: resources } } },
-      { new: true, upsert: true }
-    );
-
-    res.status(200).json(updatedPhase);
-  } catch (error) {
-    console.error('Error adding resources:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
 module.exports = {
   addResource,
   getResources,
@@ -335,16 +288,6 @@ module.exports = {
   updateMomsclient,
   deleteMomsclient,
   getMomsclient,
-
-
-
-  getAllPhases1,
-  addPhase1,
-  addResources,
-
-
-  // phase management
-
   addPhase,
   getPhases,
   getPhasesByPhaseNumber,

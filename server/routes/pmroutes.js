@@ -15,18 +15,11 @@ const {
   addMomsclient,
   updateMomsclient,
   deleteMomsclient,
-
-// routes for phase
-
   addPhase,
   getPhases,
   getPhasesByPhaseNumber,
   editPhase,
   deletePhase,
-
-  getAllPhases1,
-  addPhase1,
-  addResources
 } = pmController;
 
 const router = express.Router();
@@ -55,10 +48,6 @@ router.get('/get-phases/:phaseNumber', protectUser, getPhasesByPhaseNumber);
 router.put('/edit-phase/:id', protectUser, editPhase);
 router.delete('/delete-phase/:id', protectUser, deletePhase);
 
-//approved phase management
-router.get('/get-phases1', protectUser, getAllPhases1);
-router.post('/add-phase1', protectUser, addPhase1);
-router.post('/resources', addResources);
 
 
 module.exports = router;

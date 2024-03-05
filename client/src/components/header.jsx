@@ -4,30 +4,39 @@ import logo from '../assets/logo.jpg';
 
 const Header = () => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('Guest');
+  const [isLoggedIn, setIsLoggedIn] = useState(sessionStorage.getItem('isLoggedIn') === 'true');
+  const [username, setUsername] = useState(sessionStorage.getItem('username') || 'Guest');
 
   useEffect(() => {
-    fetch('http://localhost:4004/api/user', { 
-      credentials: 'include',
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.user) {
-        setIsLoggedIn(true);
-        setUsername(data.user.name);
-      }
-    });
-  }, []);
+    if (!isLoggedIn) {
+      fetch('http://localhost:4004/api/user', { 
+        credentials: 'include',
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('User data:', data);
+        if (data.user) {
+          setIsLoggedIn(true);
+          setUsername(data.user.name);
+          sessionStorage.setItem('isLoggedIn', 'true');
+          sessionStorage.setItem('username', data.user.name);
+        }
+      });
+    }
+  }, [isLoggedIn]);
 
   const handleLogin = () => {
+    console.log('Login button clicked');
     if (isLoggedIn) {
+      console.log('Logging out');
       fetch('http://localhost:4004/logout', {
         credentials: 'include',
       })
       .then(() => {
         setIsLoggedIn(false);
         setUsername('Guest');
+        sessionStorage.removeItem('isLoggedIn');
+        sessionStorage.removeItem('username');
       });
     } else {
       navigate('/UserLogin');

@@ -6,6 +6,7 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+
 const adminRoutes = require('./routes/adminroutes');
 const pmRoutes = require('./routes/pmroutes');
 const User = require('./models/usermodel');
@@ -69,6 +70,7 @@ app.post('/logout', (req, res) => {
 
 app.use("/admin", adminRoutes);
 app.use('/projectmanager', pmRoutes);
+
 
 connectDB().then(() => {
   app.listen(PORT, () =>

@@ -1,6 +1,7 @@
-const mongoose = require("mongoose");
+// models/resources.js
+const mongoose = require('mongoose');
 
-const ResourceSchema = new mongoose.Schema(
+const resourceSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -25,5 +26,6 @@ const ResourceSchema = new mongoose.Schema(
   { timestamps: true, versionKey: false }
 );
 
-const ResourceModel = mongoose.model("Resource", ResourceSchema);
-module.exports = ResourceModel;
+const Resource = mongoose.model('Resource', resourceSchema);
+
+module.exports = Resource;

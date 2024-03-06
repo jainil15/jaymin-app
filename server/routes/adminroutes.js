@@ -14,9 +14,9 @@ const {
 } = require("../controllers/admincontroller");
 
 /* ROUTES */
-router.post("/adduser", addUser);
-router.get("/getusers", getUsers);
-// Apply protectUser middleware to the login route
+router.post("/adduser",protectUser, addUser);
+router.get("/getusers",protectUser, getUsers);
+
 router.post("/login", protectUser, loginUser);
 
 

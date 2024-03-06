@@ -79,6 +79,26 @@ app.post('/logout', (req, res) => {
   });
 });
 
+// Define API endpoints
+app.get('/api/userRole', async (req, res) => {
+  const { email } = req.query;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (user) {
+      console.log('User role:', user.role); // Add this line for logging
+      res.json({ role: user.role });
+    } else {
+      console.log('User not found, defaulting to Client role.'); // Add this line for logging
+      res.json({ role: 'Client' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Connect to database and start server
 connectDB().then(() => {
   app.listen(PORT, () =>

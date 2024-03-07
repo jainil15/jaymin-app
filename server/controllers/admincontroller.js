@@ -123,6 +123,10 @@ const loginUser = async (req, res) => {
 
     console.log('Request Body:', req.body);  
     res.status(200).json({ message: "Logged in successfully", role: user.role, user });
+        // Store the user role in local storage
+        const userRole = user.role;
+        localStorage.setItem("userRole", user.role);
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: `Error occurred ${error}` });

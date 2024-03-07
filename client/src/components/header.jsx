@@ -14,6 +14,7 @@ const Header = () => {
         if (isAuthenticated && !isLoading) {
           const response = await axios.get(`/api/userRole?email=${user.email}`);
           const userRole = response.data.role || "Client";
+          console.log(userRole);
 
           switch(userRole) {
             case "Admin":
@@ -39,7 +40,7 @@ const Header = () => {
     };
 
     fetchUserRole();
-  }, [isAuthenticated, user, isLoading, navigate]);
+  }, [isAuthenticated, isLoading, navigate]);
 
   return (
 <header className="flex justify-between items-center h-20 bg-gray-100 p-4">
@@ -75,7 +76,7 @@ const Header = () => {
           src="https://style.monday.com/static/media/person1.de30c8ee.png"
           alt="User avatar"
         />
-        <p className="font-bold text-lg">{isAuthenticated ? user.name : "Guest"}</p>
+        <p className="font-bold text-lg">{isAuthenticated ? user.name || user.email : "Guest"}</p>
       </div>
     </header>
   );

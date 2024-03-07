@@ -3,10 +3,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const session = require('express-session');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+const { auth } = require('express-openid-connect');
 
 // Import routes
 const adminRoutes = require('./routes/adminroutes');
@@ -35,26 +35,28 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(session({
-  secret: 'c9df49d35eee83c2b2fdb67decac8be4fc2f9271679d1fa435bf32c4d89c33011344f468f7b7abc114fce83c8a7aec1d6c07d8f4a3aa0e6886bc7bd35a2f2040',
-  resave: false,
-  saveUninitialized: false,
-}));
+
+// Auth0 configuration
+// app.use(
+//   auth({
+//     authRequired: false,
+//     auth0Logout: true,
+//     issuerBaseURL: 'https://abc-name.auth0.com', // Replace with your Auth0 Domain
+//     baseURL: 'http://localhost:4000', // Replace with your server base URL
+//     clientID: 'demoidok', // Replace with your Client ID
+//     secret: 'demoscrecttkey', // Replace with your Client Secret
+//   })
+// );
 
 // Define routes
 app.use("/admin", adminRoutes);
 app.use('/projectmanager', pmRoutes);
 app.use('/client', clientRoutes);
 
-
 // Define API endpoints
 app.get('/api/user', async (req, res) => {
-  if (req.session.userId) {
-    const user = await User.findById(req.session.userId);
-    res.status(200).json({ userId: req.session.userId, name: user.name });
-  } else {
-    res.status(401).json({ message: 'Not authenticated' });
-  }
+  const user = await User.findById(req.oidc.user.sub);
+  res.status(200).json({ userId: req.oidc.user.sub, name: user.name });
 });
 
 app.post("/login", async (req, res, next) => {
@@ -65,18 +67,11 @@ app.post("/login", async (req, res, next) => {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
-  req.session.userId = user._id; 
   res.status(200).json({ message: "Logged in successfully", role: user.role });
 });
 
 app.post('/logout', (req, res) => {
-  req.session.destroy(err => {
-    if (err) {
-      return res.status(500).json({ message: 'Could not log out, please try again.' });
-    }
-    res.clearCookie('connect.sid');
-    res.status(200).json({ message: 'Logged out successfully' });
-  });
+  req.oidc.logout();
 });
 
 // Define API endpoints
@@ -87,10 +82,12 @@ app.get('/api/userRole', async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user) {
-      console.log('User role:', user.role); // Add this line for logging
+      // Add this line for logging
+      console.log('User role:', user.role); 
+      
       res.json({ role: user.role });
     } else {
-      console.log('User not found, defaulting to Client role.'); // Add this line for logging
+      console.log('User not found, defaulting to Client role.'); 
       res.json({ role: 'Client' });
     }
   } catch (error) {

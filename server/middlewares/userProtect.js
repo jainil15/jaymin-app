@@ -1,18 +1,9 @@
-const jwt = require("jsonwebtoken");
 const User = require("../models/usermodel");
-const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
-const protectUser = async (req, res, next, expectedRole) => {
+const protectUser = async (req, res, _next, expectedRole) => {
   try {
-    const token = req.cookies._token;
-
-    if (!token) {
-      return res.status(401).json({ message: "Token does not exist" });
-    }
-
-    const decodedUser = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decodedUser._id);
-
+    console.log("bolo bhai");
     if (!user) {
       return res.status(401).json({ message: "Invalid user" });
     }

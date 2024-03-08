@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+// Header.jsx
+import React, { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import axios from 'axios';
+import axios from "axios";
 import logo from "../assets/logo.jpg";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const { isAuthenticated, user, isLoading, loginWithRedirect, logout } = useAuth0();
+  const { isAuthenticated, user, isLoading, loginWithRedirect, logout } =
+    useAuth0();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +18,7 @@ const Header = () => {
           const userRole = response.data.role || "Client";
           console.log(userRole);
 
-          switch(userRole) {
+          switch (userRole) {
             case "Admin":
               navigate("/admin/dashboard");
               break;
@@ -42,8 +44,9 @@ const Header = () => {
     fetchUserRole();
   }, [isAuthenticated, isLoading, navigate]);
 
+
   return (
-<header className="flex justify-between items-center h-20 bg-gray-100 p-4">
+    <header className="flex justify-between items-center h-20 bg-gray-100 p-4">
       <nav className="border border-gray-300 flex justify-between gap-5 text-lg p-2 m-2 w-10/12 h-full">
         <div className="flex justify-between gap-2 text-black font-semibold whitespace-nowrap leading-7 mb-2">
           <img className="w-12 h-9" src={logo} alt="logo" />
@@ -76,7 +79,9 @@ const Header = () => {
           src="https://style.monday.com/static/media/person1.de30c8ee.png"
           alt="User avatar"
         />
-        <p className="font-bold text-lg">{isAuthenticated ? user.name || user.email : "Guest"}</p>
+        <p className="font-bold text-lg">
+          {isAuthenticated ? user.name || user.email : "Guest"}
+        </p>
       </div>
     </header>
   );

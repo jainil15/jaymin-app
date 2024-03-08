@@ -1,8 +1,7 @@
-// App.js
 import React from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Auth0Provider, useAuth0 } from "@auth0/auth0-react"; // Import Auth0
+import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 import Home from "./components/Home";
 import Header from "./components/Header";
 import UserLogin from "./pages/userlogin";
@@ -66,7 +65,6 @@ function App() {
               }
             />
 
-            {/* un protected routes  */}
             <Route path="/auditor/projects" element={<AuditorProjects />} />
             <Route path="/header" element={<Header />} />
             <Route path="/UserLogin" element={<UserLogin />} />

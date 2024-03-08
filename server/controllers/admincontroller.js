@@ -102,54 +102,11 @@ const deleteUser = async (req, res) => {
   }
 };
 
-/* USER LOGIN */
-const loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    // Compare the entered password with the hashed password in the database
-    const validPassword = await bcrypt.compare(password, user.password);
-
-    if (!validPassword) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    req.session.userId = user._id; // set session variable
-
-    console.log('Request Body:', req.body);  
-    res.status(200).json({ message: "Logged in successfully", role: user.role, user });
-        // Store the user role in local storage
-        const userRole = user.role;
-        localStorage.setItem("userRole", user.role);
-
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: `Error occurred ${error}` });
-  }
-};
-
-/* USER LOGOUT */
-const logoutUser = async (req, res) => {
-  req.session.destroy(err => {
-    if (err) {
-      return res.status(500).json({ message: 'Could not log out, please try again.' });
-    }
-    res.clearCookie('connect.sid');
-    res.status(200).json({ message: 'Logged out successfully' });
-  });
-}
 
 module.exports = {
   addUser,
   getUsers,
   deleteUser,
   editUser,
-  getUser,
-  loginUser,
-  logoutUser,
+  getUser
 };

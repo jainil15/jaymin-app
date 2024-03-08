@@ -1,57 +1,40 @@
 // ProtectedRoute.js
-import React, { useEffect, useState , Route} from "react";
+import React, { useEffect, useState } from "react";
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate,Navigate, Routes } from 'react-router-dom';
-import { withAuthenticationRequired } from '@auth0/auth0-react';
 import axios from "axios";
 
-const ProtectedRoute = ({ children, allowedRole,component, ...args }) => {
-
-  const { isAuthenticated, user, isLoading} = useAuth0();
+const ProtectedRoute = ({ children, allowedRole, ...rest }) => {
+  const { isAuthenticated, user, isLoading } = useAuth0();
   const navigate = useNavigate();
-  const userRole = async(request,response)=> await axios.get(`/api/userRole?email=${user.email}`);
-  console.log(userRole);
+  const [userRole, setUserRole] = useState(null);
 
-  <Routes component={withAuthenticationRequired(component)} {...args} />
-
- useEffect(() => {
-  const fetchUserRole = async () => {
-    console.log("hello user",userRole)
-    console.log("hello auth",isAuthenticated);
-    
-      if (isAuthenticated && !isLoading) {
-
-        switch(userRole) {
-          case "Admin":
-            navigate("/admin/dashboard");
-            break;
-          case "Client":
-            navigate("/client/dashboard");
-            break;
-          case "Auditor":
-            navigate("/auditor/dashboard");
-            break;
-          case "ProjectManager":
-            navigate("/projectmanager/dashboard");
-            break;
-          case "":
-            console.log("isdndj")
-             navigate("/UserLogin")
-          default:
-            navigate("/");
-        }
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await axios.get(`/api/userRole?email=${user.email}`);
+        setUserRole(response.data.role);
+      } catch (error) {
+        console.error("Error fetching user role:", error);
+        navigate("/UserLogin");
       }
-    
+    };
+
+    if (isAuthenticated && !isLoading) {
+      fetchUserRole();
     }
-}, []);
+  }, [isAuthenticated, isLoading, user, navigate]);
 
-
+  if (isLoading) return null; 
   if (!isAuthenticated) {
-    ({ returnTo: window.location.origin })
-  } else if (allowedRole === userRole) {
-    fetchUserRole();
+    return <Navigate to="/UserLogin" />;
   }
-  return children;
+
+  if (userRole === allowedRole) {
+    return children;
+  } else {
+    return <Navigate to="/" />;
+  }
 };
 
 export default ProtectedRoute;

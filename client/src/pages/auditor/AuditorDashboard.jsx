@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from 'react-toastify';
+import { RingLoader } from 'react-spinners'; // Import the loader
 import 'react-toastify/dist/ReactToastify.css';
 
 const AuditorDashboard = () => {
@@ -19,13 +20,20 @@ const AuditorDashboard = () => {
   }, [getAccessTokenSilently, isAuthenticated]);
 
   if (isLoading) {
-    toast.info('Loading...');
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <RingLoader color="#36D7B7" size={100} loading={isLoading} />
+      </div>
+    );
   }
 
   if (!isAuthenticated) {
     toast.error('You must be logged in to view this page.');
-    return <div>You must be logged in to view this page.</div>;
+    return (
+      <div className="flex bold text-4xl h-screen">
+        <p>You must be logged In to view this page.</p>
+      </div>
+    );
   }
 
   return (

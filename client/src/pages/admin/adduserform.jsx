@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 
-const adduserform = () => {
+const AddUserForm = () => {
   const [userData, setUserData] = useState({
     name: '',
-    role: 'Client', // Default role
+    role: 'Client', 
     email: '',
     password: '',
   });
 
   const [userList, setUserList] = useState([]);
   const [errors, setErrors] = useState({});
+  const [fetch, setFetch] = useState(false);
 
   useEffect(() => {
     const fetchUserList = async () => {
@@ -52,22 +53,16 @@ const adduserform = () => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
-  const handleAddUser = async () => {
+  const handleAddUser = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+
     if (validateForm()) {
       try {
         await axios.post('/admin/adduser', userData);
         setUserData({ name: '', role: 'Client', email: '', password: '' });
       } catch (error) {
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          console.log(error.request);
-        } else {
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
+        // Handle errors
+        console.error(error);
       }
     }
   };
@@ -78,60 +73,61 @@ const adduserform = () => {
         {/* Table content goes here */}
       </table>
       <h2 className="text-2xl font-bold mb-4">Add User</h2>
-      <div className="flex flex-col space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={userData.name}
-            onChange={handleInputChange}
-            className={`border p-2 rounded w-full ${errors.name && 'border-red-500'}`}
-          />
-          {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+      <form onSubmit={handleAddUser}>
+        <div className="flex flex-col space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Name:</label>
+            <input
+              type="text"
+              name="name"
+              value={userData.name}
+              onChange={handleInputChange}
+              className={`border p-2 rounded w-full ${errors.name && 'border-red-500'}`}
+            />
+            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Role:</label>
+            <select
+              name="role"
+              value={userData.role}
+              onChange={handleInputChange}
+              className="border p-2 rounded w-full"
+            >
+              <option value="Client">Client</option>
+              <option value="Auditor">Auditor</option>
+              <option value="ProjectManager">Project Manager</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Email:</label>
+            <input
+              type="text"
+              name="email"
+              value={userData.email}
+              onChange={handleInputChange}
+              className={`border p-2 rounded w-full ${errors.email && 'border-red-500'}`}
+            />
+            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Password:</label>
+            <input
+              type="password"
+              name="password"
+              value={userData.password}
+              onChange={handleInputChange}
+              className={`border p-2 rounded w-full ${errors.password && 'border-red-500'}`}
+            />
+            {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+          </div>
+          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded w-full">
+            Add User
+          </button>
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Role:</label>
-          <select
-            name="role"
-            value={userData.role}
-            onChange={handleInputChange}
-            className="border p-2 rounded w-full"
-          >
-            <option value="Client">Client</option>
-            <option value="Auditor">Auditor</option>
-            <option value="ProjectManager">Project Manager</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Email:</label>
-          <input
-            type="text"
-            name="email"
-            value={userData.email}
-            onChange={handleInputChange}
-            className={`border p-2 rounded w-full ${errors.email && 'border-red-500'}`}
-          />
-          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={userData.password}
-            onChange={handleInputChange}
-            className={`border p-2 rounded w-full ${errors.password && 'border-red-500'}`}
-          />
-          {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-        </div>
-        <button onClick={handleAddUser} className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded w-full">
-          Add User
-        </button>
-      </div>
-     
+      </form>
     </div>
   );
 };
 
-export default adduserform;
+export default AddUserForm;

@@ -1,4 +1,3 @@
-// Header.jsx
 import React, { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
@@ -80,7 +79,7 @@ const Header = () => {
           alt="User avatar"
         />
         <p className="font-bold text-lg">
-          {isAuthenticated ? user.name || user.email : "Guest"}
+          {isAuthenticated ? user.name || user.email: "Guest"}
         </p>
       </div>
     </header>

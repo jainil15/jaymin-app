@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const { auth } = require("express-openid-connect");
+const session = require("express-session");
 
 // Import routes
 const adminRoutes = require("./routes/adminroutes");
@@ -44,7 +45,12 @@ app.use("/client", clientRoutes);
 // Define API endpoints
 app.get("/api/user", async (req, res) => {
   const user = await User.findById(req.oidc.user.sub);
-  res.status(200).json({ userId: req.oidc.user.sub, name: user.name });
+  if (req.session.userId) {
+    const user = await User.findById(req.session.userId);
+    res.status(200).json({ userId: req.session.userId, name: user.name });
+  } else {
+    res.status(401).json({ message: "Not authenticated" });
+  }
 });
 
 // Define API endpoints
@@ -56,7 +62,6 @@ app.get("/api/userRole", async (req, res) => {
 
     if (user) {
       console.log("User role:", user.role);
-
       res.json({ role: user.role });
     } else {
       console.log("User not found, defaulting to Client role.");
@@ -96,3 +101,43 @@ connectDB()
 //     secret: '7n7jhX6W5--Sb-HsD_KECb4hpr6jxLTLv9_XZTQkkmG8E10gVU2WnYZAL2bsX3LO', // Replace with your Client Secret
 //   })
 // );
+/*
+  // old api without auth0
+
+app.post("/login", async (req, res) => {
+  try {
+    console.log("xniowao");
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+    req.session.userId = user._id;
+    req.session.role = user.role;
+    res
+    .status(200)
+    .json({ message: "Logged in successfully", role: user.role, user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: `Error occurred ${error}` });
+  }
+});
+
+app.post("/logout", (req, res) => {
+  req.oidc.logout();
+  req.session.destroy((err) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ message: "Could not log out, please try again." });
+    }
+    res.clearCookie("connect.sid");
+    res.status(200).json({ message: "Logged out successfully" });
+  });
+});
+*/

@@ -10,7 +10,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AuditorDashboard from "./pages/auditor/AuditorDashboard";
 import ClientDashboard from "./pages/client/ClientDashboard";
 import PmDashboard from "./pages/project_manager/Pmdashboard";
-import AuditorProjects from "./pages/auditor/AuditorProjects";
+import Projectdetilas from './pages/auditor/ProjectDetails';
 import "./App.css";
 
 axios.defaults.baseURL = 'http://localhost:4004';
@@ -33,10 +33,10 @@ function App() {
           <Route path="/projectmanager" element={<PmDashboard />} />
           <Route path="/projectmanager/dashboard" element={<PmDashboard />} />
 
-          <Route path="/auditor/projects" element={<AuditorProjects />} />
 
           <Route path='/header' element={<Header />} />
           <Route path='/userlogin' element={<UserLogin />} /> 
+
           
         </Route>
       </Routes>

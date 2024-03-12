@@ -13,6 +13,7 @@ const session = require("express-session");
 const adminRoutes = require("./routes/adminroutes");
 const pmRoutes = require("./routes/pmroutes");
 const clientRoutes = require("./routes/clientroutes");
+const auditorRoutes = require("./routes/auditorroutes");
 
 // Import models
 const User = require("./models/usermodel");
@@ -41,6 +42,7 @@ app.use(cookieParser());
 app.use("/admin", adminRoutes);
 app.use("/projectmanager", pmRoutes);
 app.use("/client", clientRoutes);
+app.use("/auditor", auditorRoutes);
 
 // Define API endpoints
 app.get("/api/user", async (req, res) => {

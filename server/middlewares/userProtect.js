@@ -21,7 +21,7 @@ const protectUser = async (req, res, _next, expectedRole) => {
 };
 
 const redirectToDashboard = (res, role) => {
-  console.log("gfcbjkecbkdc"+role);
+  console.log(role);
   switch (role.toLowerCase()) {
     case "admin":
       res.redirect("/admin/dashboard");

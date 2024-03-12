@@ -29,6 +29,13 @@ const clientfeedbackSchema = new mongoose.Schema({
         type: Date,
         default: null,
     },
+
+    project: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Project",
+      },
+
+    // i want to add a filed to connect it with project table and prpject maanger name that is fetch from a project table beacuse it is connected with stack holder 
 });
 
 // Use the correct model name

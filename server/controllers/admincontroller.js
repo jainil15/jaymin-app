@@ -1,8 +1,9 @@
 const User = require("../models/usermodel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 
-/* ADD USER */
+//  add user
 const addUser = async (req, res) => {
   try {
     const { name, role, email, password } = req.body;
@@ -20,13 +21,41 @@ const addUser = async (req, res) => {
       name,
       role,
       email,
-      password: hashedPassword,  // Save the hashed password
+      password: hashedPassword, 
+    });
+
+    // Send welcome email
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email, 
+      subject: 'Welcome to Customer Support Platform',
+      html: `<p>Thank you for signing up on our platform!</p>
+            <p>website link : http://localhost:3000</p>
+            <p>Email ID: ${email}</p>
+            <p>Password: ${password}</p>
+            <p>Invitation Role: ${role}</p>`,
+    };
+
+    await transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
     });
 
     return res.status(200).json(userDoc);
   } catch (error) {
     console.log(error);
-    return res.json({ message: `Error occurred ${error}` });
+    return res.json({ message: "An error occurred. Please try again." });
   }
 };
 
@@ -39,7 +68,7 @@ const getUsers = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    return res.json({ message: `Error occurred ${error}` });
+    return res.json({ message: "An error occurred. Please try again." });
   }
 };
 
@@ -53,7 +82,7 @@ const getUser = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    return res.json({ message: `Error occurred ${error}` });
+    return res.json({ message: "An error occurred. Please try again." });
   }
 };
 
@@ -80,7 +109,7 @@ const editUser = async (req, res) => {
     return res.status(200).json(userDoc);
   } catch (error) {
     console.log(error);
-    return res.json({ message: `Error occurred ${error}` });
+    return res.json({ message: "An error occurred. Please try again." });
   }
 };
 
@@ -98,10 +127,9 @@ const deleteUser = async (req, res) => {
     return res.status(200).json({ message: "User deleted" });
   } catch (error) {
     console.log(error);
-    return res.json({ message: `Error occurred ${error}` });
+    return res.json({ message: "An error occurred. Please try again." });
   }
 };
-
 
 module.exports = {
   addUser,

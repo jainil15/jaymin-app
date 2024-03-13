@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BiEdit } from "react-icons/bi";
 
 function EditProject({ project, setFetch }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -69,34 +70,23 @@ function EditProject({ project, setFetch }) {
     <>
       <div
         onClick={openModal}
-        className=" bg-opacity-80 text-black p-1 rounded-xl cursor-pointer"
+        className="bg-opacity-80 text-black p-1 rounded-xl cursor-pointer"
       >
-        {/* Edit icon */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-5 h-5"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-          />
-        </svg>
+        {/* Edit icon from React Icons */}
+        <BiEdit className="w-5 h-5" />
       </div>
       {isModalOpen && (
-        <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center hover:border-slate-400 bg-gray-500 bg-opacity-5 backdrop-filter backdrop-blur-md">
+        
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-blue-500 bg-opacity-30 backdrop-filter backdrop-blur-md">
           <div style={{ width: "33%" }}>
             <form
-              className="bg-bg_white text-bg_dark_font rounded-md shadow-lg shadow-bg_light_section border-2 border-bg_dark_section p-7 flex flex-col justify-center items-center gap-2"
+              className="bg-white text-black rounded-md shadow-lg p-7 flex flex-col gap-2"
               onSubmit={updateProject}
             >
               <div className="text-xl mb-4">Edit Project</div>
+              {/* Form fields */}
               <div className="w-full">
-                <label className=" mb-1" htmlFor="project_name">
+                <label className="mb-1" htmlFor="project_name">
                   Project Name
                 </label>
                 <input
@@ -106,10 +96,10 @@ function EditProject({ project, setFetch }) {
                   name="project_name"
                   value={formData.project_name}
                   onChange={handleChange}
-                  className={"w-full border rounded-md py-2 px-3"}
+                  className="w-full border rounded-md py-2 px-3"
                 />
               </div>
-
+              {/* Add other form fields */}
               <div className="mb-4 w-full">
                 <label className=" mb-1" htmlFor="project_desc">
                   Project Description
@@ -178,7 +168,7 @@ function EditProject({ project, setFetch }) {
                 </select>
               </div>
 
-              <div className="flex justify-center gap-2 w-full">
+              <div className="flex justify-center gap-2">
                 <button onClick={closeModal}>Close</button>
                 <button className="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                   Update

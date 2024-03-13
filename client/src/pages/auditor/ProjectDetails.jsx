@@ -1,10 +1,8 @@
-// ProjectDetails.jsx
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaDownload, FaTimes } from "react-icons/fa";
-import { RingLoader } from 'react-spinners';
+import { RingLoader } from "react-spinners";
 import { saveAs } from "file-saver";
 
 import {
@@ -17,8 +15,10 @@ import {
 
 import Budget from "./Project/Budget";
 import ProjectOverview from "./Project/ProjectOverview";
+import Stakeholder from "./Project/stakeholder";
+import AuditHistory from "./Project/AuditHistory";
 
-function ProjectDetails({ onClose,project }) {
+function ProjectDetails({ onClose, project, updateProjectData }) {
   const [fetch, setFetch] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -57,21 +57,20 @@ function ProjectDetails({ onClose,project }) {
       <TabsContext>
         <TabList>
           <Tab>Project Overview</Tab>
+          <Tab>Stakeholder</Tab>
           <Tab>Budget</Tab>
-          <Tab>Risk Profiling</Tab>
-          <Tab>Phases/Milestones</Tab>
-          <Tab>Sprint wise detail</Tab>
-          <Tab>Stckholder</Tab>
           <Tab>Audit History</Tab>
           <Tab>Version History</Tab>
           <Tab>Escalation Matrix</Tab>
         </TabList>
         <div className="flex gap-3 items-center cursor-pointer">
           <h1 className="font-bold">Project Name: {project.project_name}</h1>
-          <div onClick={() => download(project._id)}>
-            <FaDownload />
-          </div>
-          <div onClick={onClose}>
+
+          <div
+            className="flex text-center justify-content-between items-center"
+            onClick={onClose}
+          >
+            <span className="font-bold">Close</span>
             <FaTimes />
           </div>
         </div>
@@ -80,16 +79,30 @@ function ProjectDetails({ onClose,project }) {
             {/* PROJECT OVERVIEW COMPONENT */}
             <ProjectOverview project={project} setFetch={setFetch} />
           </TabPanel>
+
+          <TabPanel>
+            {/* STAKEHOLDER COMPONENT */}
+            <Stakeholder project={project} setFetch={setFetch} />
+          </TabPanel>
+
           <TabPanel>
             {/* BUDGET COMPONENT */}
-            <Budget project={project} setFetch={setFetch} />
+            <Budget
+              project={project}
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
+            />
           </TabPanel>
-          {/* Other TabPanel components */}
-          <TabPanel>Risk Profiling</TabPanel>
-          <TabPanel>Phases/Milestones</TabPanel>
-          <TabPanel>Sprint wise detail</TabPanel>
-          <TabPanel>Stckholder</TabPanel>
-          <TabPanel>Audit History</TabPanel>
+
+          <TabPanel>
+            {/* AUDIT HISTORY COMPONENT */}
+            <AuditHistory
+              project={project}
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
+            />
+          </TabPanel>
+
           <TabPanel>Version History</TabPanel>
           <TabPanel>Escalation Matrix</TabPanel>
         </TabPanels>

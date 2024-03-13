@@ -3,17 +3,21 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { toast } from "react-toastify";
 import { RingLoader } from "react-spinners";
 import "react-toastify/dist/ReactToastify.css";
+import { Button } from "monday-ui-react-core";
+import axios from "axios";
 
-// import page
 import CreateProject from "./CreateProject";
 import DisplayProjects from "./DisplayProjects";
 import ProjectDetails from "./ProjectDetails";
+import Adduser from "../admin/adduserform";
 
 const AuditorDashboard = () => {
   const { getAccessTokenSilently, isLoading, isAuthenticated } = useAuth0();
   const [token, setToken] = useState(null);
   const [fetch, setFetch] = useState(false);
   const [project, setProject] = useState(null);
+  const [showAddUser, setShowAddUser] = useState(false);
+  const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -34,6 +38,29 @@ const AuditorDashboard = () => {
     setProject(null);
   };
 
+  const updateProjectData = async () => {
+    try {
+      const response = await axios.get(
+        `/auditor/fetch-project/${project._id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.status === 200) {
+        setProject(response.data);
+      } else {
+        console.log("Failed to fetch project data");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const toggleCreateProjectModal = () => {
+    setIsCreateProjectModalOpen(!isCreateProjectModalOpen);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -41,14 +68,10 @@ const AuditorDashboard = () => {
       </div>
     );
   }
-
+  
   if (!isAuthenticated) {
-    toast.error("You must be logged in to view this page.");
-    return (
-      <div className="flex bold text-4xl h-screen">
-        <p>You must be logged In to view this page.</p>
-      </div>
-    );
+    toast.error('You must be logged in to view this page.');
+    return <div>You must be logged in to view this page.</div>;
   }
 
   return (
@@ -60,28 +83,68 @@ const AuditorDashboard = () => {
         Auditor Dashboard
       </h1>
 
-      {! project && (
-        <>
-          <CreateProject
-            className="mt-10 mb-10"
-            setFetch={setFetch}
-            fetch={fetch}
-            isVisible={!project}
-          />
-          <DisplayProjects
-            fetch={fetch}
-            setFetch={setFetch}
-            onViewMore={openProjectDetails}
-          />
-        </>
+      {!project && (
+        <div className="flex justify-start items-center space-x-4 mb-5">
+          <button
+            className="bg-blue-500 text-white py-2 px-2 rounded-md hover:bg-blue-600"
+            onClick={toggleCreateProjectModal}
+          >
+            Create Project
+          </button>
+
+          <button
+            className="bg-blue-500 text-white py-2 px-2 ml-5 rounded-md hover:bg-blue-600"
+            onClick={() => setShowAddUser(true)}
+          >
+            Add User
+          </button>
+        </div>
+      )}
+
+      {showAddUser && (
+        <div
+          onClick={() => setShowAddUser(false)}
+          className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-blue-500 bg-opacity-30 z-50"
+          style={{ backdropFilter: "blur(5px)" }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: "40%",
+              margin: "auto",
+              background: "rgba(255, 255, 255, 0.8)",
+              border: "1px solid #ccc",
+              borderRadius: "8px",
+              overflow: "auto",
+            }}
+          >
+            <Adduser fetch={fetch} />
+          </div>
+        </div>
+      )}
+
+      {!project && (
+        <DisplayProjects
+          fetch={fetch}
+          setFetch={setFetch}
+          onViewMore={openProjectDetails}
+        />
       )}
 
       {project && (
         <ProjectDetails
           project={project}
           onClose={closeProjectDetails}
+          updateProjectData={updateProjectData}
         />
       )}
+
+      {/* Render CreateProject component with isOpen prop */}
+      <CreateProject
+        fetch={fetch}
+        setFetch={setFetch}
+        isOpen={isCreateProjectModalOpen}
+      />
     </div>
   );
 };

@@ -68,6 +68,8 @@ router.put(
   editAuditHistory
 );
 
+
+
 // Routes for Matrix
 const {
   createOperationalMatrix,
@@ -102,19 +104,7 @@ router.put("/edit-operationalMatrix/:operationalMatrix_id", editOperationalMatri
 router.put("/edit-financialMatrix/:financialMatrix_id", editFinancialMatrix);
 router.put("/edit-technicalMatrix/:technicalMatrix_id", editTechnicalMatrix);
 
-// Routes for Risk
-const { createRisk, deleteRisk, editRisk } = riskController;
 
-router.post("/create-risk/:project_id", createRisk);
-router.delete("/delete-risk/:project_id/:risk_id", deleteRisk);
-router.put("/edit-risk/:risk_id", editRisk);
-
-// Routes for Sprint
-const { createSprint, deleteSprint, editSprint } = sprintController;
-
-router.post("/create-sprint/:project_id", createSprint);
-router.delete("/delete-sprint/:project_id/:sprint_id", deleteSprint);
-router.put("/edit-sprint/:sprint_id", editSprint);
 
 // Routes for Version History
 const {
@@ -138,4 +128,5 @@ const {downloadpdf} = require("../controllers/pdfdownloadcontroller");
 router.get("/download-pdf/:project_id", downloadpdf);
 
 
+// r
 module.exports = router;

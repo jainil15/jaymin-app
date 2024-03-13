@@ -1,8 +1,6 @@
-// ProjectOverview.jsx
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { toast, Toaster } from "react-hot-toast"; // Import toast and Toaster
+import { ToastContainer, toast } from "react-toastify"; // Import toast
 import "react-toastify/dist/ReactToastify.css";
 
 const ProjectOverview = ({ project, setFetch }) => {
@@ -63,7 +61,6 @@ const ProjectOverview = ({ project, setFetch }) => {
     <div className="max-w-md mx-auto mt-8">
       <form onSubmit={handleSubmit}>
         {/* Form Inputs */}
-
         <div className="mb-4">
           <label className="block mb-1" htmlFor="project_name">
             Project Name
@@ -78,6 +75,7 @@ const ProjectOverview = ({ project, setFetch }) => {
             className="w-full border rounded-md py-2 px-3"
           />
         </div>
+        {/* Add other form inputs */}
         <div className="mb-4">
           <label className="block mb-1" htmlFor="project_desc">
             Project Description
@@ -165,7 +163,6 @@ const ProjectOverview = ({ project, setFetch }) => {
             id="client_name"
             name="client_name"
             value={formData.client_name}
-            onChange={handleChange}
             className="w-full border rounded-md py-2 px-3"
           />
         </div>
@@ -183,6 +180,7 @@ const ProjectOverview = ({ project, setFetch }) => {
             className="w-full border rounded-md py-2 px-3"
           />
         </div>
+
         <button
           type="submit"
           className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
@@ -190,8 +188,8 @@ const ProjectOverview = ({ project, setFetch }) => {
           Save
         </button>
       </form>
-      {/* Toaster for displaying notifications */}
-      <Toaster position="bottom-right" reverseOrder={false} />
+      {/* ToastContainer for displaying notifications */}
+      <ToastContainer position="bottom-right" />
     </div>
   );
 };

@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Button } from "monday-ui-react-core";
 import EditBudget from "./EditBudget";
 
-const Budget = ({ project, setFetch }) => {
+const Budget = ({ project, setFetch, updateProjectData }) => {
   const [formData, setFormData] = useState({
     type: "",
     duration: "",
@@ -32,7 +32,10 @@ const Budget = ({ project, setFetch }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`/auditor/create-budget/${project._id}`, formData);
+      const response = await axios.post(
+        `/auditor/create-budget/${project._id}`,
+        formData
+      );
       if (response.status === 200) {
         setFetch((prev) => !prev);
         toast.success("Budget created successfully");
@@ -42,6 +45,8 @@ const Budget = ({ project, setFetch }) => {
           budgetedHours: "",
         });
         closeModal();
+        updateProjectData();
+        // ...other code...
       }
     } catch (err) {
       if (err.response.status === 409) {
@@ -50,14 +55,17 @@ const Budget = ({ project, setFetch }) => {
       console.log(err);
     }
   };
-  
+
   const handleDelete = async (budget_id) => {
     const confirmDelete = window.confirm("Do you want to delete?");
     if (confirmDelete) {
       try {
-        await axios.delete(`/auditor/delete-budget/${project._id}/${budget_id}`);
+        await axios.delete(
+          `/auditor/delete-budget/${project._id}/${budget_id}`
+        );
         toast.success("Budget deleted successfully");
         setFetch((prev) => !prev); // Trigger re-fetch
+        updateProjectData(); // Update the project data in the parent component
       } catch (error) {
         console.log(error);
       }
@@ -66,13 +74,17 @@ const Budget = ({ project, setFetch }) => {
 
   return (
     <>
-      <Button onClick={openModal} className="m-2">+ Add budget</Button>
+      <Button onClick={openModal} className="m-2">
+        + Add budget
+      </Button>
       {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white text-black rounded-md shadow-lg p-7 flex flex-col justify-center items-center gap-2">
             <div className="text-xl mb-4">Add Budget</div>
             <div className="w-full">
-              <label className="mb-1" htmlFor="type">Type</label>
+              <label className="mb-1" htmlFor="type">
+                Type
+              </label>
               <select
                 required
                 id="type"
@@ -87,7 +99,9 @@ const Budget = ({ project, setFetch }) => {
               </select>
             </div>
             <div className="w-full">
-              <label className="mb-1" htmlFor="duration">Duration</label>
+              <label className="mb-1" htmlFor="duration">
+                Duration
+              </label>
               <input
                 required
                 type="number"
@@ -100,7 +114,9 @@ const Budget = ({ project, setFetch }) => {
               />
             </div>
             <div className="w-full">
-              <label className="mb-1" htmlFor="budgetedHours">Budgeted Hours</label>
+              <label className="mb-1" htmlFor="budgetedHours">
+                Budgeted Hours
+              </label>
               <input
                 required
                 type="number"
@@ -129,22 +145,40 @@ const Budget = ({ project, setFetch }) => {
       <table className="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
-            <th scope="col" className="px-6 py-3">Type</th>
-            <th scope="col" className="px-6 py-3">Duration</th>
-            <th scope="col" className="px-6 py-3">Budgeted Hours</th>
-            <th scope="col" className="px-6 py-3">Actions</th>
+            <th scope="col" className="px-6 py-3">
+              Type
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Duration
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Budgeted Hours
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody>
           {project?.project_budget?.length > 0 &&
             project.project_budget.map((budget) => (
-              <tr className="bg-white border-b hover:bg-gray-50" key={budget._id}>
+              <tr
+                className="bg-white border-b hover:bg-gray-50"
+                key={budget._id}
+              >
                 <td className="px-6 py-4">{budget.type}</td>
                 <td className="px-6 py-4">{budget.duration}</td>
                 <td className="px-6 py-4">{budget.budgetedHours}</td>
                 <td className="px-6 py-4 flex gap-2">
-                  <EditBudget budget={budget} setFetch={setFetch} />
-                  <Button onClick={() => handleDelete(budget._id)}>Delete</Button>
+                  <EditBudget
+                    budget={budget}
+                    setFetch={setFetch}
+                    updateProjectData={updateProjectData}
+                  />
+
+                  <Button onClick={() => handleDelete(budget._id)}>
+                    Delete
+                  </Button>
                 </td>
               </tr>
             ))}

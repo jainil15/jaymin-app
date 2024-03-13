@@ -13,7 +13,7 @@ import {
 } from "monday-ui-react-core";
 import "monday-ui-react-core/tokens";
 
-const CreateProject = ({ fetch, setFetch }) => {
+const CreateProject = ({ fetch, setFetch, isOpen }) => {
   const [formData, setFormData] = useState({
     project_name: "",
     project_desc: "",
@@ -47,6 +47,10 @@ const CreateProject = ({ fetch, setFetch }) => {
     fetchUsers();
   }, []);
 
+  useEffect(() => {
+    setModalIsOpen(isOpen);
+  }, [isOpen]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -66,7 +70,7 @@ const CreateProject = ({ fetch, setFetch }) => {
           client_email: "",
           project_manager: "",
         });
-        toast.success("Project Created successfully ");
+        toast.success("Project Created successfully and Mail sent to Client.");
         setFetch((prev) => !prev);
         setModalIsOpen(false);
       }
@@ -83,12 +87,6 @@ const CreateProject = ({ fetch, setFetch }) => {
     <>
       <div className="max-w mt-8">
         <div className="flex p-4 w-1/6  hover:border-slate-400">
-          <button
-            onClick={() => setModalIsOpen(true)}
-            className="bg-blue-500 text-white py-2 px-2 ml-5 rounded-md hover:bg-blue-600"
-          >
-            Create Project
-          </button>
         </div>
 
         <Modal
@@ -188,6 +186,7 @@ const CreateProject = ({ fetch, setFetch }) => {
                 className={"w-full border rounded-md py-2 px-3"}
               />
             </div>
+            
             <div className="mb-4">
               <label className="block mb-1" htmlFor="client_email">
                 Client Email

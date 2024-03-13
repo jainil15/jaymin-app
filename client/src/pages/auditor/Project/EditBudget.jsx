@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BiEdit } from "react-icons/bi";
 
-function EditBudget({ budget, setFetch }) {
+function EditBudget({ budget, setFetch, updateProjectData }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -27,13 +28,13 @@ function EditBudget({ budget, setFetch }) {
   async function updateBudget(e) {
     e.preventDefault();
     try {
-      await axios.put(`/auditor/edit-budget/${budget._id}`, formData).then((res) => {
-        if (res.status === 200) {
-          toast.success("Budget Edited successfully");
-          setFetch((prev) => !prev);
-          closeModal();
-        }
-      });
+      const response = await axios.put(`/auditor/edit-budget/${budget._id}`, formData);
+      if (response.status === 200) {
+        toast.success("Budget Edited successfully");
+        setFetch((prev) => !prev);
+        closeModal();
+        updateProjectData(); // Update the project data in the parent component
+      }
     } catch (err) {
       if (err.response.status === 409) {
         toast.error(err.response.data.message);
@@ -41,25 +42,14 @@ function EditBudget({ budget, setFetch }) {
       console.log(err);
     }
   }
+  
+  
 
   return (
     <>
       <div onClick={openModal} className="p-1 cursor-pointer">
         {/* Edit icon */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-5 h-5 text-gray-700 hover:text-gray-900"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-          />
-        </svg>
+        <BiEdit className="w-5 h-5" />
       </div>
       {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-30 z-50">

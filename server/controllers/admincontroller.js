@@ -1,5 +1,4 @@
 const User = require("../models/usermodel");
-const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 
@@ -86,6 +85,27 @@ const getUser = async (req, res) => {
   }
 };
 
+// get user by role
+
+const getUserByRole = async (req, res) => {
+  try {
+    const { role } = req.params;
+    const user = await
+    User.find
+    ({ role: role });
+    if (user) {
+      return res.status(200).json(user);
+    }
+  }
+  catch (error) {
+    console.log(error);
+    return res.json({ message: "An error occurred. Please try again." });
+  }
+
+};
+
+
+
 /* EDIT USER */
 const editUser = async (req, res) => {
   try {
@@ -131,10 +151,61 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// Assign project to user
+const assignProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { project_id } = req.body;
+
+    const userDoc = await User.findById(id);
+
+    if (!userDoc) {
+      return res.status(404).json({ message: "User does not exist" });
+    }
+
+    // Update the projects array in the User document
+    if (!userDoc.projects.includes(project_id)) {
+      userDoc.projects.push(project_id);
+      await userDoc.save();
+    }
+
+    return res.status(200).json(userDoc);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "An error occurred. Please try again." });
+  }
+};
+
+// Unassign project from user
+const unassignProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { project_id } = req.body;
+
+    const userDoc = await User.findById(id);
+
+    if (!userDoc) {
+      return res.status(404).json({ message: "User does not exist" });
+    }
+
+    // Update the projects array in the User document
+    userDoc.projects = userDoc.projects.filter(project => project.toString() !== project_id);
+    await userDoc.save();
+
+    return res.status(200).json(userDoc);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "An error occurred. Please try again." });
+  }
+};
+
 module.exports = {
   addUser,
   getUsers,
   deleteUser,
   editUser,
-  getUser
+  getUser,
+  getUserByRole,
+  assignProject,
+  unassignProject
 };

@@ -22,6 +22,12 @@ const resourceSchema = new mongoose.Schema(
     comment: {
       type: String,
     },
+
+    projects: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Project',
+    },
+
   },
   { timestamps: true, versionKey: false }
 );

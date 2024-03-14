@@ -62,12 +62,7 @@ const ProjectSchema = new mongoose.Schema(
       },
     ],
 
-    project_phases: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Phase",
-      },
-    ],
+   
 
     project_projectupdates: [
       {
@@ -94,6 +89,7 @@ const ProjectSchema = new mongoose.Schema(
         ref: "Phase",
       },
     ],
+
     project_sprints: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -128,6 +124,13 @@ const ProjectSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "TechnicalMatrix",
+      },
+    ],
+
+    project_milestone: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Milestone",
       },
     ],
     project_version_history: [

@@ -1,77 +1,77 @@
-const Resource = require('../models/resourcemodel');
-const ProjectUpdates = require('../models/projectupdates');
-const Momsclient = require('../models/momsclientmodel');
-const Phase = require('../models/phasemodel');
+const Resource = require("../models/resourcemodel");
+const ProjectUpdates = require("../models/projectupdates");
+const Momsclient = require("../models/momsclientmodel");
+const Phase = require("../models/phasemodel");
 
 // Resource Management
 
-const addResource = async (req, res) => {
-  try {
-    const { name, role, startDate, endDate, comment } = req.body;
+// const addResource = async (req, res) => {
+//   try {
+//     const { name, role, startDate, endDate, comment } = req.body;
 
-    const resourceDoc = await Resource.create({
-      name,
-      role,
-      startDate,
-      endDate,
-      comment,
-    });
+//     const resourceDoc = await Resource.create({
+//       name,
+//       role,
+//       startDate,
+//       endDate,
+//       comment,
+//     });
 
-    return res.status(200).json(resourceDoc);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: `Error occurred ${error}` });
-  }
-};
+//     return res.status(200).json(resourceDoc);
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ message: `Error occurred ${error}` });
+//   }
+// };
 
-const getResources = async (req, res) => {
-  try {
-    const resources = await Resource.find({});
-    return res.status(200).json(resources);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: `Error occurred ${error}` });
-  }
-};
+// const getResources = async (req, res) => {
+//   try {
+//     const resources = await Resource.find({});
+//     return res.status(200).json(resources);
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ message: `Error occurred ${error}` });
+//   }
+// };
 
-const editResource = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, role, startDate, endDate, comment } = req.body;
+// const editResource = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { name, role, startDate, endDate, comment } = req.body;
 
-    const resourceDoc = await Resource.findByIdAndUpdate(
-      id,
-      {
-        name,
-        role,
-        startDate,
-        endDate,
-        comment,
-      },
-      { new: true }
-    );
+//     const resourceDoc = await Resource.findByIdAndUpdate(
+//       id,
+//       {
+//         name,
+//         role,
+//         startDate,
+//         endDate,
+//         comment,
+//       },
+//       { new: true }
+//     );
 
-    if (!resourceDoc) {
-      return res.status(404).json({ message: 'No resource found with this id' });
-    }
+//     if (!resourceDoc) {
+//       return res.status(404).json({ message: 'No resource found with this id' });
+//     }
 
-    return res.status(200).json(resourceDoc);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: `Error occurred ${error}` });
-  }
-};
+//     return res.status(200).json(resourceDoc);
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ message: `Error occurred ${error}` });
+//   }
+// };
 
-const deleteResource = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const resourceDoc = await Resource.findByIdAndDelete(id);
-    return res.status(200).json(resourceDoc);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: `Error occurred ${error}` });
-  }
-};
+// const deleteResource = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const resourceDoc = await Resource.findByIdAndDelete(id);
+//     return res.status(200).json(resourceDoc);
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ message: `Error occurred ${error}` });
+//   }
+// };
 
 // Project Updates
 
@@ -116,7 +116,9 @@ const editProjectUpdate = async (req, res) => {
     );
 
     if (!projectUpdateDoc) {
-      return res.status(404).json({ message: 'No project update found with this id' });
+      return res
+        .status(404)
+        .json({ message: "No project update found with this id" });
     }
 
     return res.status(200).json(projectUpdateDoc);
@@ -144,7 +146,7 @@ const getMomsclients = async (req, res) => {
     const momsclients = await Momsclient.find();
     res.json(momsclients);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -152,9 +154,9 @@ const addMomsclient = async (req, res) => {
   try {
     const newMomsclient = new Momsclient(req.body);
     await newMomsclient.save();
-    res.json({ message: 'Momsclient added successfully' });
+    res.json({ message: "Momsclient added successfully" });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -162,9 +164,9 @@ const updateMomsclient = async (req, res) => {
   try {
     const { id } = req.params;
     await Momsclient.findByIdAndUpdate(id, req.body);
-    res.json({ message: 'Momsclient updated successfully' });
+    res.json({ message: "Momsclient updated successfully" });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -172,9 +174,9 @@ const deleteMomsclient = async (req, res) => {
   try {
     const { id } = req.params;
     await Momsclient.findByIdAndDelete(id);
-    res.json({ message: 'Momsclient deleted successfully' });
+    res.json({ message: "Momsclient deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -184,15 +186,20 @@ const getMomsclient = async (req, res) => {
     const momsclient = await Momsclient.findById(id);
     res.json(momsclient);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 
 //phase management
 const addPhase = async (req, res) => {
   try {
-    const { phaseNumber, numberOfResources, role, availabilityPercentage, duration } = req.body;
+    const {
+      phaseNumber,
+      numberOfResources,
+      role,
+      availabilityPercentage,
+      duration,
+    } = req.body;
 
     const phaseDoc = await Phase.create({
       phaseNumber,
@@ -223,9 +230,11 @@ const getPhasesByPhaseNumber = async (req, res) => {
   try {
     const { phaseNumber } = req.params;
     const phases = await Phase.find({ phaseNumber });
-    
+
     if (!phases || phases.length === 0) {
-      return res.status(404).json({ message: `No phases found with phase number ${phaseNumber}` });
+      return res
+        .status(404)
+        .json({ message: `No phases found with phase number ${phaseNumber}` });
     }
 
     return res.status(200).json(phases);
@@ -238,7 +247,13 @@ const getPhasesByPhaseNumber = async (req, res) => {
 const editPhase = async (req, res) => {
   try {
     const { id } = req.params;
-    const { phaseNumber, numberOfResources, role, availabilityPercentage, duration } = req.body;
+    const {
+      phaseNumber,
+      numberOfResources,
+      role,
+      availabilityPercentage,
+      duration,
+    } = req.body;
 
     const phaseDoc = await Phase.findByIdAndUpdate(
       id,
@@ -253,7 +268,7 @@ const editPhase = async (req, res) => {
     );
 
     if (!phaseDoc) {
-      return res.status(404).json({ message: 'No phase found with this id' });
+      return res.status(404).json({ message: "No phase found with this id" });
     }
 
     return res.status(200).json(phaseDoc);
@@ -275,10 +290,10 @@ const deletePhase = async (req, res) => {
 };
 
 module.exports = {
-  addResource,
-  getResources,
-  editResource,
-  deleteResource,
+  // addResource,
+  // getResources,
+  // editResource,
+  // deleteResource,
   addProjectUpdate,
   getProjectUpdates,
   editProjectUpdate,
@@ -294,4 +309,3 @@ module.exports = {
   editPhase,
   deletePhase,
 };
-

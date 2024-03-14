@@ -105,9 +105,12 @@ const AuditHistory = ({ project, setFetch, updateProjectData }) => {
   };
   return (
     <>
-      <Button onClick={openModal} className="m-2">
-        + Add Audit history
-      </Button>
+      <button
+        onClick={openModal}
+        className="m-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+      >
+        Add Audit History
+      </button>
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -228,6 +231,9 @@ const AuditHistory = ({ project, setFetch, updateProjectData }) => {
             </th>
             <th scope="col" className="px-6 py-3">
               Action Item
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Actions
             </th>
           </tr>
         </thead>

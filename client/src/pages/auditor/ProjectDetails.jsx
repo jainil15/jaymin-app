@@ -17,6 +17,32 @@ import Budget from "./Project/Budget";
 import ProjectOverview from "./Project/ProjectOverview";
 import Stakeholder from "./Project/stakeholder";
 import AuditHistory from "./Project/AuditHistory";
+import VersionHistory from "./Project/VersionHistory";
+import FinancialMatrix from "./Project/FinancialMatrix";
+import OperationalMatrix from "./Project/OperationalMatrix";
+import TechnicalMatrix from "./Project/TechnicalMatrix";
+
+function EscalationMatix({ project, setFetch, updateProjectData }) {
+  return (
+    <div>
+      <FinancialMatrix
+        project={project}
+        setFetch={setFetch}
+        updateProjectData={updateProjectData}
+      />
+      <OperationalMatrix
+        project={project}
+        setFetch={setFetch}
+        updateProjectData={updateProjectData}
+      />
+      <TechnicalMatrix
+        project={project}
+        setFetch={setFetch}
+        updateProjectData={updateProjectData}
+      />
+    </div>
+  );
+}
 
 function ProjectDetails({ onClose, project, updateProjectData }) {
   const [fetch, setFetch] = useState(false);
@@ -103,8 +129,23 @@ function ProjectDetails({ onClose, project, updateProjectData }) {
             />
           </TabPanel>
 
-          <TabPanel>Version History</TabPanel>
-          <TabPanel>Escalation Matrix</TabPanel>
+          <TabPanel>
+            {/* VERSION HISTORY COMPONENT */}
+            <VersionHistory
+              project={project}
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
+            />
+          </TabPanel>
+
+          <TabPanel>
+            <EscalationMatix
+              project={project}
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
+            />
+          </TabPanel>
+
         </TabPanels>
       </TabsContext>
     </div>

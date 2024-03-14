@@ -74,9 +74,13 @@ const Budget = ({ project, setFetch, updateProjectData }) => {
 
   return (
     <>
-      <Button onClick={openModal} className="m-2">
-        + Add budget
-      </Button>
+      <button
+        onClick={openModal}
+        className="m-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+      >
+        Add Budget
+      </button>
+
       {isModalOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white text-black rounded-md shadow-lg p-7 flex flex-col justify-center items-center gap-2">

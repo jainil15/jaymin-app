@@ -90,9 +90,11 @@ function DisplayProjects({ fetch, setFetch, onViewMore }) {
                   {formatCreatedAt(project.createdAt)}
                 </td>
                 <td className="border px-4 py-2 flex gap-2 justify-center items-center">
-                  <button onClick={() => download(project._id)}>
+
+
+                  {/* <button onClick={() => download(project._id)}>
                     <FiDownload />
-                  </button>
+                  </button> */}
 
                   <button onClick={() => onViewMore(project)}>
                     <FiEye />

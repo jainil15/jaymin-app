@@ -19,6 +19,7 @@ const createProject = async (req, res, next) => {
       client_name,
       client_email,
       project_manager,
+      project_manager_email,
       project_status,
     } = req.body;
     const projectExists = await Project.findOne({ project_name });
@@ -35,6 +36,7 @@ const createProject = async (req, res, next) => {
       client_name,
       client_email,
       project_manager,
+      project_manager_email,
       project_status,
     });
 
@@ -134,6 +136,7 @@ const editProject = async (req, res, next) => {
       project_manager,
       client_name,
       client_email,
+      project_manager_email,
       project_status,
     } = req.body;
 
@@ -150,6 +153,7 @@ const editProject = async (req, res, next) => {
     projectDoc.project_scope = project_scope;
     projectDoc.project_stack = project_stack;
     projectDoc.project_manager = project_manager;
+    projectDoc.project_manager_email = project_manager_email;
     projectDoc.client_name = client_name;
     projectDoc.client_email = client_email;
     projectDoc.project_status = project_status;

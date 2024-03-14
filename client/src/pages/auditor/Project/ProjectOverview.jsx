@@ -14,6 +14,7 @@ const ProjectOverview = ({ project, setFetch }) => {
     client_name: "",
     client_email: "",
     project_status: "",
+    project_manager_email: "", // Added project_manager_email to formData
   });
 
   useEffect(() => {
@@ -27,6 +28,7 @@ const ProjectOverview = ({ project, setFetch }) => {
         project_stack: project.project_stack,
         project_status: project.project_status,
         project_manager: project.project_manager,
+        project_manager_email: project.project_manager_email, // Assign project_manager_email from project
         client_name: project.client_name,
         client_email: project.client_email,
       }));
@@ -66,7 +68,7 @@ const ProjectOverview = ({ project, setFetch }) => {
             Project Name
           </label>
           <input
-            required
+            readOnly // Set readOnly to disable editing
             type="text"
             id="project_name"
             name="project_name"
@@ -107,7 +109,7 @@ const ProjectOverview = ({ project, setFetch }) => {
             Project Stack
           </label>
           <select
-            required
+            readOnly // Set readOnly to disable editing
             type="text"
             id="project_stack"
             name="project_stack"
@@ -133,7 +135,7 @@ const ProjectOverview = ({ project, setFetch }) => {
             onChange={handleChange}
             className="w-full border rounded-md py-2 px-3"
           >
-            <option value="">Select </option>
+            <option value="">Select</option>
             <option value="In progress">In progress</option>
             <option value="Completed">Completed</option>
             <option value="On hold">On hold</option>
@@ -144,7 +146,7 @@ const ProjectOverview = ({ project, setFetch }) => {
             Project Manager
           </label>
           <input
-            required
+            readOnly // Set readOnly to disable editing
             type="text"
             id="project_manager"
             name="project_manager"
@@ -153,12 +155,13 @@ const ProjectOverview = ({ project, setFetch }) => {
             className="w-full border rounded-md py-2 px-3"
           />
         </div>
+        {/* Non-editable fields */}
         <div className="mb-4">
           <label className="block mb-1" htmlFor="client_name">
             Client Name
           </label>
           <input
-            required
+            readOnly // Set readOnly to disable editing
             type="text"
             id="client_name"
             name="client_name"
@@ -171,7 +174,7 @@ const ProjectOverview = ({ project, setFetch }) => {
             Client Email
           </label>
           <input
-            required
+            readOnly // Set readOnly to disable editing
             type="email"
             id="client_email"
             name="client_email"
@@ -180,7 +183,20 @@ const ProjectOverview = ({ project, setFetch }) => {
             className="w-full border rounded-md py-2 px-3"
           />
         </div>
-
+        <div className="mb-4">
+          <label className="block mb-1" htmlFor="project_manager_email">
+            Project Manager Email
+          </label>
+          <input
+            readOnly // Set readOnly to disable editing
+            type="email"
+            id="project_manager_email"
+            name="project_manager_email"
+            value={formData.project_manager_email}
+            onChange={handleChange}
+            className="w-full border rounded-md py-2 px-3"
+          />
+        </div>
         <button
           type="submit"
           className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"

@@ -13,12 +13,15 @@ function EditProject({ project, setFetch }) {
     project_scope: project.project_scope,
     project_stack: project.project_stack,
     project_manager: project.project_manager,
+    project_manager_email: project.project_manager_email,
     client_name: project.client_name,
     client_email: project.client_email,
     project_status: project.project_status,
   });
 
   const [projectManagers, setProjectManagers] = useState([]);
+  const [projectManagersemail, setProjectManagersemail] = useState([]);
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -26,8 +29,10 @@ function EditProject({ project, setFetch }) {
         const users = response.data;
 
         const managers = users.filter((user) => user.role === "ProjectManager");
+        const managersEmails = managers.map((manager) => manager.email);
 
         setProjectManagers(managers);
+        setProjectManagersemail(managersEmails);
       } catch (error) {
         console.error(error);
       }
@@ -52,7 +57,7 @@ function EditProject({ project, setFetch }) {
     e.preventDefault();
     try {
       await axios.put("/auditor/edit-project", formData).then((res) => {
-        if (res.status == 200) {
+        if (res.status === 200) {
           toast.success("Project Edited successfully ");
           setFetch((prev) => !prev);
           closeModal();
@@ -76,7 +81,6 @@ function EditProject({ project, setFetch }) {
         <BiEdit className="w-5 h-5" />
       </div>
       {isModalOpen && (
-        
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-blue-500 bg-opacity-30 backdrop-filter backdrop-blur-md">
           <div style={{ width: "33%" }}>
             <form
@@ -163,6 +167,28 @@ function EditProject({ project, setFetch }) {
                   {projectManagers.map((manager) => (
                     <option key={manager._id} value={manager.name}>
                       {manager.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* add for projectmanager email */}
+              <div className="mb-4 w-full">
+                <label className="block mb-1" htmlFor="project_manager_email">
+                  Project Manager Email
+                </label>
+                <select
+                  required
+                  id="project_manager_email"
+                  name="project_manager_email"
+                  value={formData.project_manager_email}
+                  onChange={handleChange}
+                  className="w-full border rounded-md py-2 px-3"
+                >
+                  <option value="">Select</option>
+                  {projectManagersemail.map((email) => (
+                    <option key={email} value={email}>
+                      {email}
                     </option>
                   ))}
                 </select>

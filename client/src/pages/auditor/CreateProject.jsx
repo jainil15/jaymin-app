@@ -22,10 +22,12 @@ const CreateProject = ({ fetch, setFetch, isOpen }) => {
     client_name: "",
     client_email: "",
     project_manager: "",
+    project_manager_email: "", // New field for project manager's email
   });
 
   const [projectManagers, setProjectManagers] = useState([]);
   const [clientEmails, setClientEmails] = useState([]);
+  const [projectManagersemail, setProjectManagersemail] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
@@ -36,9 +38,11 @@ const CreateProject = ({ fetch, setFetch, isOpen }) => {
 
         const managers = users.filter((user) => user.role === "ProjectManager");
         const clients = users.filter((user) => user.role === "Client");
+        const projectManagerEmails = managers.map((manager) => manager.email); // Extracting emails from project managers
 
         setProjectManagers(managers);
         setClientEmails(clients);
+        setProjectManagersemail(projectManagerEmails); // Setting emails directly
       } catch (error) {
         console.error(error);
       }
@@ -69,6 +73,7 @@ const CreateProject = ({ fetch, setFetch, isOpen }) => {
           client_name: "",
           client_email: "",
           project_manager: "",
+          project_manager_email: "", // Clearing the field after submission
         });
         toast.success("Project Created successfully and Mail sent to Client.");
         setFetch((prev) => !prev);
@@ -86,8 +91,7 @@ const CreateProject = ({ fetch, setFetch, isOpen }) => {
   return (
     <>
       <div className="max-w mt-8">
-        <div className="flex p-4 w-1/6  hover:border-slate-400">
-        </div>
+        <div className="flex p-4 w-1/6  hover:border-slate-400"></div>
 
         <Modal
           isOpen={modalIsOpen}
@@ -186,7 +190,7 @@ const CreateProject = ({ fetch, setFetch, isOpen }) => {
                 className={"w-full border rounded-md py-2 px-3"}
               />
             </div>
-            
+
             <div className="mb-4">
               <label className="block mb-1" htmlFor="client_email">
                 Client Email
@@ -226,6 +230,29 @@ const CreateProject = ({ fetch, setFetch, isOpen }) => {
                   <option key={manager._id} value={manager.name}>
                     {manager.name}
                   </option>
+                ))}
+              </select>
+            </div>
+
+            {/* part 4 */}
+            <div className="mb-4">
+              <label className="block mb-1" htmlFor="project_manager_email">
+                Project Manager Email
+              </label>
+
+              <select
+                required
+                id="project_manager_email"
+                name="project_manager_email"
+                value={formData.project_manager_email}
+                onChange={handleChange}
+                className="w-full border rounded-md py-2 px-3"
+              >
+                <option value="">Select</option>
+                {projectManagersemail.map((manageremail) => (
+                   <option key={manageremail} value={manageremail}>
+                   {manageremail}
+                 </option>
                 ))}
               </select>
             </div>

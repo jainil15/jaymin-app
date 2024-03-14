@@ -28,6 +28,10 @@ const ProjectSchema = new mongoose.Schema(
       type: String,
     },
 
+    project_manager_email: {
+      type: String,
+    },
+
     project_status: {
       type: String,
       default: "IN PROGRESS",

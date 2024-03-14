@@ -17,7 +17,8 @@ const AuditorDashboard = () => {
   const [fetch, setFetch] = useState(false);
   const [project, setProject] = useState(null);
   const [showAddUser, setShowAddUser] = useState(false);
-  const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] = useState(false);
+  const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] =
+    useState(false);
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -68,9 +69,9 @@ const AuditorDashboard = () => {
       </div>
     );
   }
-  
+
   if (!isAuthenticated) {
-    toast.error('You must be logged in to view this page.');
+    toast.error("You must be logged in to view this page.");
     return <div>You must be logged in to view this page.</div>;
   }
 
@@ -83,6 +84,7 @@ const AuditorDashboard = () => {
         Auditor Dashboard
       </h1>
 
+      {/* create proejct  */}
       {!project && (
         <div className="flex justify-start items-center space-x-4 mb-5">
           <button
@@ -101,6 +103,7 @@ const AuditorDashboard = () => {
         </div>
       )}
 
+      {/* add user  */}
       {showAddUser && (
         <div
           onClick={() => setShowAddUser(false)}

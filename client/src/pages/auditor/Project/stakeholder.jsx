@@ -1,5 +1,3 @@
-// Stakeholder.jsx
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast, Toaster } from "react-hot-toast"; // Import toast and Toaster
@@ -16,10 +14,13 @@ const Stakeholder = ({ project, setFetch }) => {
     client_name: "",
     client_email: "",
     project_status: "",
+    project_manager_email: "",
+    auditor_email: "", // Added auditor_email field
   });
 
   const [projectManagers, setProjectManagers] = useState([]);
   const [clientEmails, setClientEmails] = useState([]);
+  const [auditorEmails, setAuditorEmails] = useState([]); // State for storing auditor emails
 
   useEffect(() => {
     if (project) {
@@ -34,6 +35,7 @@ const Stakeholder = ({ project, setFetch }) => {
         project_manager: project.project_manager,
         client_name: project.client_name,
         client_email: project.client_email,
+        project_manager_email: project.project_manager_email,
       }));
     }
   }, [project]);
@@ -46,9 +48,11 @@ const Stakeholder = ({ project, setFetch }) => {
 
         const managers = users.filter((user) => user.role === "ProjectManager");
         const clients = users.filter((user) => user.role === "Client");
+        const auditors = users.filter((user) => user.role === "Auditor"); // Filter out auditors
 
         setProjectManagers(managers);
         setClientEmails(clients);
+        setAuditorEmails(auditors); // Set auditor emails
       } catch (error) {
         console.error(error);
       }
@@ -101,6 +105,46 @@ const Stakeholder = ({ project, setFetch }) => {
             {projectManagers.map((manager) => (
               <option key={manager._id} value={manager.name}>
                 {manager.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1" htmlFor="project_manager_email">
+            Project Manager Email
+          </label>
+          <select
+            required
+            id="project_manager_email"
+            name="project_manager_email"
+            value={formData.project_manager_email}
+            onChange={handleChange}
+            className="w-full border rounded-md py-2 px-3"
+          >
+            <option value="">Select</option>
+            {projectManagers.map((manager) => (
+              <option key={manager._id} value={manager.email}>
+                {manager.email}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-4">
+          <label className="block mb-1" htmlFor="auditor_email">
+            Auditor Email
+          </label>
+          <select
+            required
+            id="auditor_email"
+            name="auditor_email"
+            value={formData.auditor_email}
+            onChange={handleChange}
+            className="w-full border rounded-md py-2 px-3"
+          >
+            <option value="">Select</option>
+            {auditorEmails.map((auditor) => (
+              <option key={auditor._id} value={auditor.email}>
+                {auditor.email}
               </option>
             ))}
           </select>

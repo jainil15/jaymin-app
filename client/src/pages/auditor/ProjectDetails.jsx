@@ -13,8 +13,8 @@ import {
   TabPanel,
 } from "monday-ui-react-core";
 
-import Budget from "./Project/Budget";
 import ProjectOverview from "./Project/ProjectOverview";
+import Budget from "./Project/Budget";
 import Stakeholder from "./Project/stakeholder";
 import AuditHistory from "./Project/AuditHistory";
 import VersionHistory from "./Project/VersionHistory";

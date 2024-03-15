@@ -101,6 +101,7 @@ const displayProjects = async (req, res, next) => {
       .populate("project_operational_matrix")
       .populate("project_financial_matrix")
       .populate("project_technical_matrix")
+      .populate("project_milestone")
       .populate("project_version_history");
 
     if (projects) {
@@ -187,6 +188,7 @@ const fetchOneProject = async (req, res, next) => {
       .populate("project_operational_matrix")
       .populate("project_financial_matrix")
       .populate("project_technical_matrix")
+      .populate("project_milestone")
       .populate("project_version_history");
 
     if (!projectDoc) {

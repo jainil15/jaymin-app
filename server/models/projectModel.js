@@ -131,12 +131,14 @@ const ProjectSchema = new mongoose.Schema(
       },
     ],
 
+      // miltstones
     project_milestone: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Milestone",
       },
     ],
+
     project_version_history: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DisplayProjects from "./DisplayProjects";
 import ProjectDetails from "./ProjectDetails";
+import axios from "axios"; // Import axios
 
 const PmDashboard = () => {
   const { getAccessTokenSilently, isLoading, isAuthenticated, user } = useAuth0();
@@ -17,6 +18,7 @@ const PmDashboard = () => {
       if (isAuthenticated) {
         try {
           const temp = await getAccessTokenSilently();
+          setToken(temp); // Set token
           setProjectManagerEmail(user.email);
         } catch (error) {
           console.error("Error fetching email:", error);
@@ -48,7 +50,7 @@ const PmDashboard = () => {
   const updateProjectData = async () => {
     try {
       const response = await axios.get(
-        `/auditor/fetch-project/${project._id}`,
+        `/projectmanager/fetch-project/${project._id}`, // Corrected route
         {
           headers: { Authorization: `Bearer ${token}` },
         }

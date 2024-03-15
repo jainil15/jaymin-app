@@ -15,6 +15,12 @@ import {
 
 // import file
 import ProjectOverview from "../auditor/Project/ProjectOverview";
+import RiskProfile from "./Project/Risk";
+import Sprint from "./Project/Sprint";
+import Milestone from "./Project/Milestones";
+
+import Stakeholder from "./Project/DisplayStackholder";
+import AuditHistory from "./Project/DisplayAudithistory";
 
 function ProjectDetails({ onClose, project, updateProjectData }) {
   const [fetch, setFetch] = useState(false);
@@ -38,14 +44,11 @@ function ProjectDetails({ onClose, project, updateProjectData }) {
           <Tab>Milestones</Tab>
           <Tab>Resource</Tab>
           <Tab>Phase</Tab>
-          <Tab>Updates</Tab>
-          <Tab>MoMs</Tab>
+          <Tab>Project Updates</Tab>
+          <Tab>MoMs CLient</Tab>
           <Tab>Stakeholder</Tab>
-          <Tab>Budget</Tab>
           <Tab>Audit History</Tab>
-          <Tab>Version History</Tab>
-          <Tab>Escalation Matrix</Tab>
-          <Tab>CLient Feedback</Tab>
+          <Tab>Client Feedback</Tab>
         </TabList>
 
         <div className="flex gap-3 items-center cursor-pointer">
@@ -60,29 +63,80 @@ function ProjectDetails({ onClose, project, updateProjectData }) {
           </div>
         </div>
         <TabPanels>
+          {/* PROJECT OVERVIEW COMPONENT */}
           <TabPanel>
-            {/* PROJECT OVERVIEW COMPONENT */}
-            <h1>Project Overview</h1>
-            <ProjectOverview project={project} setFetch={setFetch} />
-
-          </TabPanel>
-
-          <TabPanel>
-            <h1>Risk Profile</h1>
-            {/* <RiskProfile
+            <ProjectOverview
               project={project}
               setFetch={setFetch}
               updateProjectData={updateProjectData}
-            /> */}
+            />
           </TabPanel>
 
-          <TabPanel></TabPanel>
+          {/* RISK PROFILING COMPONENT */}
+          <TabPanel>
+            <RiskProfile
+              project={project}
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
+            />
+          </TabPanel>
 
-          <TabPanel>{/* AUDIT HISTORY COMPONENT */}</TabPanel>
+          {/* SPRINT COMPONENT */}
+          <TabPanel>
+            <h1>Sprint</h1>
+            <Sprint
+              project={project}
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
+            />
+          </TabPanel>
 
-          <TabPanel>{/* VERSION HISTORY COMPONENT */}</TabPanel>
+          {/* Milestone */}
+          <TabPanel>
+            <h1>Milestone</h1>
 
-          <TabPanel></TabPanel>
+            <Milestone
+              project={project}
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
+            />
+          </TabPanel>
+
+          <TabPanel>
+            <h1>Resource</h1>
+          </TabPanel>
+
+          <TabPanel>
+            <h1>Phase</h1>
+          </TabPanel>
+
+          <TabPanel>
+            <h1>Project Updates</h1>
+          </TabPanel>
+
+          <TabPanel>
+            <h1>MoMs CLient</h1>
+          </TabPanel>
+
+          {/* STAKEHOLDER COMPONENT */}
+          <TabPanel>
+            <Stakeholder project={project} 
+            setFetch={setFetch}
+            updateProjectData={updateProjectData}
+            />
+          </TabPanel>
+
+          <TabPanel>
+              <AuditHistory project={project} 
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
+              />  
+
+          </TabPanel>
+
+          <TabPanel>
+            <h1>Client Feedback</h1>
+          </TabPanel>
         </TabPanels>
       </TabsContext>
     </div>

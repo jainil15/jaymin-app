@@ -5,8 +5,6 @@ const budgetController = require("../controllers/budgetController");
 const stackholderController = require("../controllers/stackholderController");
 const auditHistoryController = require("../controllers/auditHistoryController");
 const matrixController = require("../controllers/matrixController");
-const riskController = require("../controllers/riskController");
-const sprintController = require("../controllers/sprintController");
 const versionHistoryController = require("../controllers/versionHistoryController");
 const {pdfdownloadcontroller} = require("../controllers/pdfdownloadcontroller");
 

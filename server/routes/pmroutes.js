@@ -5,6 +5,7 @@ const ResourceController = require("../controllers/Resourcecontroller");
 const RiskController = require("../controllers/riskController");
 const SprintController = require("../controllers/sprintController");
 const MileStoneController = require("../controllers/MileStoneController");
+const ProjectController = require("../controllers/projectController");
 
 const {
   addProjectUpdate,
@@ -23,6 +24,9 @@ const {
 } = pmController;
 
 const router = express.Router();
+
+
+
 
 router.post("/add-project-update", protectUser, addProjectUpdate);
 router.get("/get-project-updates", protectUser, getProjectUpdates);
@@ -48,6 +52,8 @@ router.get("/get-resources", protectUser, getResources);
 router.put("/edit-resource/:id", protectUser, editResource);
 router.delete("/delete-resource/:id", protectUser, deleteResource);
 
+
+// risk routes
 const { createRisk, editRisk, deleteRisk } = RiskController;
 
 router.post("/create-risk/:project_id", createRisk);
@@ -67,3 +73,14 @@ router.delete("/delete-milestone/:project_id/:milestone_id", deleteMilestone);
 router.put("/edit-milestone/:milestone_id", editMilestone);
 
 module.exports = router;
+
+
+const {
+  displayProjects,
+  editProject,
+  fetchOneProject,
+} = ProjectController;
+
+router.get("/display-projects", displayProjects);
+router.get("/fetch-project/:id", fetchOneProject);
+router.put("/edit-project", editProject);

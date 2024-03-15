@@ -15,7 +15,7 @@ Welcome to the Promact Customer Success Platform! This platform is designed to s
 
 1. **Navigate to Backend folder:**
    ```
-   cd Backend
+   cd server
    ```
    
 2. **Install Dependencies:**
@@ -23,19 +23,17 @@ Welcome to the Promact Customer Success Platform! This platform is designed to s
    npm install
    ```
    
-3. **Configure Environment Variables:**
-   - Rename `.env.sample` to `.env` and customize the values if needed.
-   
-4. **Start the Backend Server:**
+
+3. **Start the Backend Server:**
    ```
-   node server.js
+   npm start
    ```
 
 ### Frontend Setup
 
 1. **Navigate to Frontend folder:**
    ```
-   cd Frontend
+   cd client
    ```
    
 2. **Install Dependencies:**

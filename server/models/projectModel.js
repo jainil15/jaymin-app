@@ -38,40 +38,11 @@ const ProjectSchema = new mongoose.Schema(
     },
 
     // reference to the user who created the project
-    
+
     project_users: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-      },
-    ],
-    project_feeback: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "ClientFeedback",
-      },
-    ],
-
-    project_resources: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Resource",
-      },
-    ],
-
-    project_momsclients: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Momsclient",
-      },
-    ],
-
-   
-
-    project_projectupdates: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "ProjectUpdates",
       },
     ],
 
@@ -85,12 +56,6 @@ const ProjectSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Risk",
-      },
-    ],
-    project_phases: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Phase",
       },
     ],
 
@@ -131,11 +96,44 @@ const ProjectSchema = new mongoose.Schema(
       },
     ],
 
-      // miltstones
+    // miltstones
     project_milestone: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Milestone",
+      },
+    ],
+
+    project_feeback: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ClientFeedback",
+      },
+    ],
+
+    project_resources: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Resource",
+      },
+    ],
+
+    project_momsclients: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Momsclient",
+      },
+    ],
+    project_projectUpdates: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ProjectUpdate",
+      },
+    ],
+    project_team: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Team",
       },
     ],
 

@@ -1,79 +1,89 @@
-const Resource = require('../models/resourcemodel');
+const Project = require("../models/projectModel");
+const Resource = require("../models/resourcemodel");
 
+// CREATE RESOURCE
+const createResource = async (req, res, next) => {
+  try {
+    const { project_id } = req.params;
+    const { resourceName, role, startDate, endDate, comments } = req.body;
 
-const addResource = async (req, res) => {
-    try {
-      const { name, role, startDate, endDate, comment } = req.body;
-  
-      const resourceDoc = await Resource.create({
-        name,
-        role,
-        startDate,
-        endDate,
-        comment,
-      });
-  
-      return res.status(200).json(resourceDoc);
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: `Error occurred ${error}` });
+    const projectDoc = await Project.findOne({ _id: project_id });
+    if (!projectDoc) {
+      return res
+        .status(404)
+        .json({ message: "Project not found for this phase" });
     }
-  };
-  
-  const getResources = async (req, res) => {
-    try {
-      const resources = await Resource.find({});
-      return res.status(200).json(resources);
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: `Error occurred ${error}` });
-    }
-  };
-  
-  const editResource = async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { name, role, startDate, endDate, comment } = req.body;
-  
-      const resourceDoc = await Resource.findByIdAndUpdate(
-        id,
-        {
-          name,
-          role,
-          startDate,
-          endDate,
-          comment,
-        },
-        { new: true }
-      );
-  
-      if (!resourceDoc) {
-        return res.status(404).json({ message: 'No resource found with this id' });
-      }
-  
-      return res.status(200).json(resourceDoc);
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: `Error occurred ${error}` });
-    }
-  };
-  
-  const deleteResource = async (req, res) => {
-    try {
-      const { id } = req.params;
-      const resourceDoc = await Resource.findByIdAndDelete(id);
-      return res.status(200).json(resourceDoc);
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: `Error occurred ${error}` });
-    }
-  };
 
+    const resourceDoc = await Resource.create({
+      resourceName,
+      role,
+      startDate,
+      endDate,
+      comments,
+    });
 
-    module.exports = {
-        addResource,
-        getResources,
-        editResource,
-        deleteResource
+    // ADD RESOURCE ID TO PROJECT TABLE
+    projectDoc?.project_resources?.push(resourceDoc._id);
+    await projectDoc.save();
+
+    return res.status(200).json({ message: "Resource created" });
+  } catch (error) {
+    console.log(error);
+    return res.json({ message: `Error occurred ${error}` });
+  }
+};
+
+// DELETE RESOURCE
+const deleteResource = async (req, res, next) => {
+  try {
+    const { project_id, resource_id } = req.params;
+    const projectDoc = await Project.findById({ _id: project_id });
+
+    if (!projectDoc) {
+      return res.status(404).json({ message: "Project not found" });
     }
-    
+
+    // Remove the resource with the specified resource_id
+    projectDoc.project_resources = projectDoc.project_resources.filter(
+      (resource) => resource.toString() !== resource_id
+    );
+
+    // Save the updated project document
+    await projectDoc.save();
+    await Resource.deleteOne({ _id: resource_id });
+
+    return res.status(200).json({ message: "Resource deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.json({ message: `Error occurred ${error}` });
+  }
+};
+
+// EDIT RESOURCE
+const editResource = async (req, res, next) => {
+  try {
+    const { resourceName, role, startDate, endDate, comments } = req.body;
+    const { resource_id } = req.params;
+    const resourceDoc = await Resource.findOne({ _id: resource_id });
+
+    if (!resourceDoc) {
+      return res.status(409).json({ message: "Resource does not exist" });
+    }
+
+    await resourceDoc.set({
+      resourceName,
+      role,
+      startDate,
+      endDate,
+      comments,
+    });
+
+    await resourceDoc.save();
+    return res.status(200).json({ message: "Resource edited successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.json({ message: `Error occurred ${error}` });
+  }
+};
+
+module.exports = { createResource, deleteResource, editResource };

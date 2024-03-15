@@ -1,14 +1,21 @@
+const mongoose = require("mongoose");
 
-
-const mongoose = require('mongoose');
-
-const momsclientSchema = new mongoose.Schema({
-  Date: { type: Date, required: true },
-  Duration: { type: String, required: true },
-  MomLink: { type: String, required: true },
-  Comments: { type: String, required: true },
-});
-
-const Momsclient = mongoose.model('Momsclient', momsclientSchema);
-
-module.exports = Momsclient;
+const MomSchema = new mongoose.Schema(
+  {
+    date: {
+      type: Date,
+    },
+    duration: {
+      type: String,
+    },
+    link: {
+      type: String,
+    },
+    comments: {
+      type: String,
+    },
+  },
+  { timestamps: true, versionKey: false }
+);
+const MomModel = mongoose.model("Momsclient", MomSchema);
+module.exports = MomModel;

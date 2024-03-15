@@ -18,9 +18,12 @@ import ProjectOverview from "../auditor/Project/ProjectOverview";
 import RiskProfile from "./Project/Risk";
 import Sprint from "./Project/Sprint";
 import Milestone from "./Project/Milestones";
-
+import Resource from "./Project/Resource";
+import ProjectUpdate from "./Project/projectUpdate";
 import Stakeholder from "./Project/DisplayStackholder";
 import AuditHistory from "./Project/DisplayAudithistory";
+import TeamPhase from "./Project/Team";
+import MomsClient from "./Project/MomsClient";
 
 function ProjectDetails({ onClose, project, updateProjectData }) {
   const [fetch, setFetch] = useState(false);
@@ -43,8 +46,8 @@ function ProjectDetails({ onClose, project, updateProjectData }) {
           <Tab>Sprint</Tab>
           <Tab>Milestones</Tab>
           <Tab>Resource</Tab>
-          <Tab>Phase</Tab>
-          <Tab>Project Updates</Tab>
+          <Tab>Updates</Tab>
+          <Tab>Team Phase</Tab>
           <Tab>MoMs CLient</Tab>
           <Tab>Stakeholder</Tab>
           <Tab>Audit History</Tab>
@@ -83,7 +86,6 @@ function ProjectDetails({ onClose, project, updateProjectData }) {
 
           {/* SPRINT COMPONENT */}
           <TabPanel>
-            <h1>Sprint</h1>
             <Sprint
               project={project}
               setFetch={setFetch}
@@ -93,8 +95,6 @@ function ProjectDetails({ onClose, project, updateProjectData }) {
 
           {/* Milestone */}
           <TabPanel>
-            <h1>Milestone</h1>
-
             <Milestone
               project={project}
               setFetch={setFetch}
@@ -102,36 +102,56 @@ function ProjectDetails({ onClose, project, updateProjectData }) {
             />
           </TabPanel>
 
+            {/* <h1>Resource</h1> */}
           <TabPanel>
-            <h1>Resource</h1>
+            <Resource
+              project={project}
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
+            />
           </TabPanel>
 
+          {/* updates */}
           <TabPanel>
-            <h1>Phase</h1>
+            <ProjectUpdate
+              project={project}
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
+            />
           </TabPanel>
 
+          {/* team panel */}
           <TabPanel>
-            <h1>Project Updates</h1>
-          </TabPanel>
-
-          <TabPanel>
-            <h1>MoMs CLient</h1>
-          </TabPanel>
-
-          {/* STAKEHOLDER COMPONENT */}
-          <TabPanel>
-            <Stakeholder project={project} 
-            setFetch={setFetch}
-            updateProjectData={updateProjectData}
+            <TeamPhase
+              project={project}
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
             />
           </TabPanel>
 
           <TabPanel>
-              <AuditHistory project={project} 
+            <MomsClient
+              project={project}
               setFetch={setFetch}
               updateProjectData={updateProjectData}
-              />  
+            />
+          </TabPanel>
 
+          {/* STAKEHOLDER COMPONENT */}
+          <TabPanel>
+            <Stakeholder
+              project={project}
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
+            />
+          </TabPanel>
+
+          <TabPanel>
+            <AuditHistory
+              project={project}
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
+            />
           </TabPanel>
 
           <TabPanel>

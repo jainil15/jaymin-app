@@ -1,37 +1,24 @@
-// models/resources.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const resourceSchema = new mongoose.Schema(
+const ResourceSchema = new mongoose.Schema(
   {
-    name: {
+    resourceName: {
       type: String,
-      required: true,
     },
     role: {
       type: String,
-      required: true,
     },
     startDate: {
       type: Date,
-      required: true,
     },
     endDate: {
       type: Date,
-      required: true,
     },
-    comment: {
+    comments: {
       type: String,
     },
-
-    projects: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Project',
-    },
-
   },
   { timestamps: true, versionKey: false }
 );
-
-const Resource = mongoose.model('Resource', resourceSchema);
-
-module.exports = Resource;
+const ResourceModel = mongoose.model("Resource", ResourceSchema);
+module.exports = ResourceModel;

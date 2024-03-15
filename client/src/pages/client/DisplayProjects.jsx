@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-import { FiEye, FiDownload, FiTrash2 } from "react-icons/fi";
+import { FiEye, FiDownload } from "react-icons/fi";
 
-function DisplayProjects({ fetch, setFetch, onViewMore,projectmanageremail}) {
+function DisplayProjects({ fetch, setFetch, onViewMore, clientEmail }) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get("/projectmanager/display-projects");
+        const response = await axios.get("/client/display-projects");
         console.log("Projects from API:", response.data);
-        
+
         // Filter projects based on project_manager_email
-        const filteredProjects = response.data.filter(project => project.project_manager_email === projectmanageremail);
-        
+        const filteredProjects = response.data.filter(
+          (project) => project.client_email === clientEmail
+        );
+
         console.log("Filtered Projects:", filteredProjects);
         setProjects(filteredProjects);
       } catch (error) {
@@ -23,8 +25,7 @@ function DisplayProjects({ fetch, setFetch, onViewMore,projectmanageremail}) {
       }
     }
     fetchData();
-  }, [fetch, projectmanageremail]);
-
+  }, [fetch, clientEmail]);
 
   const formatCreatedAt = (createdAt) => {
     const date = new Date(createdAt);
@@ -33,8 +34,6 @@ function DisplayProjects({ fetch, setFetch, onViewMore,projectmanageremail}) {
     }/${date.getFullYear()}`;
     return formattedDate;
   };
-
-
 
   return (
     <div
@@ -67,13 +66,13 @@ function DisplayProjects({ fetch, setFetch, onViewMore,projectmanageremail}) {
                 </td>
 
                 <td className="border px-4 py-2 flex gap-2 justify-center items-center">
-                <button onClick={() => onViewMore(project)}>
+                  <button onClick={() => onViewMore(project)}>
                     <FiEye />
                   </button>
-
-                    </td>
-               
-
+                  <button>
+                    <FiDownload />
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

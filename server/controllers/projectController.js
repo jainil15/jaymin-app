@@ -2,9 +2,9 @@ const Project = require("../models/projectModel");
 const Budget = require("../models/budgetModel");
 const ClientFeedback = require("../models/clientfeedbackmodel");
 const Momsclient = require("../models/momsclientmodel");
-const Phase = require("../models/phasemodel");
-const ProjectUpdates = require("../models/projectupdates");
+const ProjectUpdates = require("../models/projectupdateModel");
 const Resource = require("../models/resourcemodel");
+const Team = require("../models/teamModel");
 
 const nodemailer = require("nodemailer");
 
@@ -87,14 +87,13 @@ const createProject = async (req, res, next) => {
 const displayProjects = async (req, res, next) => {
   try {
     const projects = await Project.find({})
+    .populate("project_momsclients")
       .populate("project_feeback")
       .populate("project_resources")
-      .populate("project_momsclients")
-      .populate("project_phases")
-      .populate("project_projectupdates")
+      .populate("project_projectUpdates")
+      .populate("project_team")
       .populate("project_budget")
       .populate("project_risks")
-      .populate("project_phases")
       .populate("project_sprints")
       .populate("project_stackholder")
       .populate("project_audit_history")
@@ -174,14 +173,14 @@ const fetchOneProject = async (req, res, next) => {
   const { id } = req.params;
   try {
     const projectDoc = await Project.findById(id)
+    .populate("project_momsclients")
       .populate("project_feeback")
       .populate("project_resources")
-      .populate("project_momsclients")
-      .populate("project_phases")
-      .populate("project_projectupdates")
+      .populate("project_projectUpdates")
+      .populate("project_team")
+      
       .populate("project_budget")
       .populate("project_risks")
-      .populate("project_phases")
       .populate("project_sprints")
       .populate("project_stackholder")
       .populate("project_audit_history")

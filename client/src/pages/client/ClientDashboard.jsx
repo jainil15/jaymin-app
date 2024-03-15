@@ -1,36 +1,94 @@
 import React, { useEffect, useState } from "react";
-import Clientfeeback from "./clientfeeback";
 import { useAuth0 } from "@auth0/auth0-react";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import DisplayProjects from "./DisplayProjects";
+import ProjectDetails from "./ProjectDetails";
+import axios from "axios"; // Import axios
 
 const ClientDashboard = () => {
-  const { getAccessTokenSilently, isLoading, isAuthenticated } = useAuth0();
+  const { getAccessTokenSilently, isLoading, isAuthenticated, user } = useAuth0();
+  const [clientEmail, setClientEmail] = useState(null);
+  const [token, setToken] = useState(null);
+  const [fetch, setFetch] = useState(false);
+  const [project, setProject] = useState(null);
 
   useEffect(() => {
-    const fetchToken = async () => {
+    const fetchEmail = async () => {
       if (isAuthenticated) {
-        const temp = await getAccessTokenSilently();
+        try {
+          const temp = await getAccessTokenSilently();
+          setToken(temp); // Set token
+          setClientEmail(user.email);
+        } catch (error) {
+          console.error("Error fetching email:", error);
+        }
       }
     };
-
-    fetchToken();
-  }, [getAccessTokenSilently, isAuthenticated]);
+    
+    fetchEmail();
+  }, [getAccessTokenSilently, isAuthenticated, user]);
 
   if (isLoading) {
-    toast.info('Loading...');
-    return <div>Loading...</div>;
+    toast.info("Loading...");
+    return <div className="text-center mt-10">Loading...</div>;
   }
 
   if (!isAuthenticated) {
-    toast.error('You must be logged in to view this page.');
-    return <div>You must be logged in to view this page.</div>;
+    toast.error("You must be logged in to view this page.");
+    return <div className="text-center mt-10">You must be logged in to view this page.</div>;
   }
 
+  const openProjectDetails = (project) => {
+    setProject(project);
+  };
+
+  const closeProjectDetails = () => {
+    setProject(null);
+  };
+
+  const updateProjectData = async () => {
+    try {
+      const response = await axios.get(
+        `/client/fetch-project/${project._id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.status === 200) {
+        setProject(response.data);
+      } else {
+        console.log("Failed to fetch project data");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center space-y-16">
-      <h1 className="text-4xl font-bold text-center">Client Dashboard</h1>
-      <Clientfeeback />
+    <div className="container mx-auto p-4">
+      <h1 className="text-4xl font-bold text-center mt-10 mb-10">Client Dashboard</h1>
+      <div className="font-semibold">
+        <div>
+          <h1 className="text-lg  mb-4">Project Display</h1>
+          {!project && (
+            <DisplayProjects
+              fetch={fetch}
+              setFetch={setFetch}
+              onViewMore={openProjectDetails}
+              clientEmail={clientEmail}
+            />
+          )}
+        </div>
+        {project && (
+          <ProjectDetails
+            project={project}
+            onClose={closeProjectDetails}
+            updateProjectData={updateProjectData}
+          />
+        )}
+      </div>
     </div>
   );
 };

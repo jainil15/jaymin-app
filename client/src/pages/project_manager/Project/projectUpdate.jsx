@@ -86,7 +86,7 @@ const ProjectUpdate = ({ project, setFetch, updateProjectData }) => {
   return (
     <>
       <Button onClick={openModal} className="m-2">
-        + Add Project Update
+         Add Project Update
       </Button>
 
       <Modal

@@ -1,12 +1,11 @@
+const nodemailer = require("nodemailer");
 const Project = require("../models/projectModel");
 const Budget = require("../models/budgetModel");
-const ClientFeedback = require("../models/clientfeedbackmodel");
 const Momsclient = require("../models/momsclientmodel");
 const ProjectUpdates = require("../models/projectupdateModel");
 const Resource = require("../models/resourcemodel");
 const Team = require("../models/teamModel");
-
-const nodemailer = require("nodemailer");
+const ClientFeedback = require("../models/clientFeedbackModel");
 
 // CREATE PROJECT
 const createProject = async (req, res, next) => {
@@ -87,8 +86,7 @@ const createProject = async (req, res, next) => {
 const displayProjects = async (req, res, next) => {
   try {
     const projects = await Project.find({})
-    .populate("project_momsclients")
-      .populate("project_feeback")
+     .populate("project_momsclients")
       .populate("project_resources")
       .populate("project_projectUpdates")
       .populate("project_team")
@@ -101,7 +99,8 @@ const displayProjects = async (req, res, next) => {
       .populate("project_financial_matrix")
       .populate("project_technical_matrix")
       .populate("project_milestone")
-      .populate("project_version_history");
+      .populate("project_version_history")
+      .populate("project_clientFeedback");
 
     if (projects) {
       return res.status(200).json(projects);
@@ -174,11 +173,10 @@ const fetchOneProject = async (req, res, next) => {
   try {
     const projectDoc = await Project.findById(id)
     .populate("project_momsclients")
-      .populate("project_feeback")
       .populate("project_resources")
       .populate("project_projectUpdates")
       .populate("project_team")
-      
+      .populate("project_clientFeedback")
       .populate("project_budget")
       .populate("project_risks")
       .populate("project_sprints")

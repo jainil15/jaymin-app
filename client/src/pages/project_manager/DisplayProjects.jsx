@@ -3,7 +3,7 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { FiEye, FiDownload, FiTrash2 } from "react-icons/fi";
 
-function DisplayProjects({ fetch, setFetch, onViewMore,projectmanageremail}) {
+function DisplayProjects({ fetch, setFetch, onViewMore, projectmanageremail }) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -12,10 +12,12 @@ function DisplayProjects({ fetch, setFetch, onViewMore,projectmanageremail}) {
       try {
         const response = await axios.get("/projectmanager/display-projects");
         console.log("Projects from API:", response.data);
-        
+
         // Filter projects based on project_manager_email
-        const filteredProjects = response.data.filter(project => project.project_manager_email === projectmanageremail);
-        
+        const filteredProjects = response.data.filter(
+          (project) => project.project_manager_email === projectmanageremail
+        );
+
         console.log("Filtered Projects:", filteredProjects);
         setProjects(filteredProjects);
       } catch (error) {
@@ -25,7 +27,6 @@ function DisplayProjects({ fetch, setFetch, onViewMore,projectmanageremail}) {
     fetchData();
   }, [fetch, projectmanageremail]);
 
-
   const formatCreatedAt = (createdAt) => {
     const date = new Date(createdAt);
     const formattedDate = `${date.getDate()}/${
@@ -33,8 +34,6 @@ function DisplayProjects({ fetch, setFetch, onViewMore,projectmanageremail}) {
     }/${date.getFullYear()}`;
     return formattedDate;
   };
-
-
 
   return (
     <div
@@ -67,13 +66,10 @@ function DisplayProjects({ fetch, setFetch, onViewMore,projectmanageremail}) {
                 </td>
 
                 <td className="border px-4 py-2 flex gap-2 justify-center items-center">
-                <button onClick={() => onViewMore(project)}>
+                  <button onClick={() => onViewMore(project)}>
                     <FiEye />
                   </button>
-
-                    </td>
-               
-
+                </td>
               </tr>
             ))}
           </tbody>

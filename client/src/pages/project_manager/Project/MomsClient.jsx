@@ -51,6 +51,7 @@ const MomsClient = ({ project, setFetch, updateProjectData }) => {
           comments: "",
         });
         closeModal();
+        updateProjectData();
       }
     } catch (err) {
       if (err.response.status === 409) {
@@ -67,6 +68,7 @@ const MomsClient = ({ project, setFetch, updateProjectData }) => {
         const response = await axios.delete(`/projectmanager/delete-moms/${project._id}/${mom_id}`);
         toast.success(response.data.message);
         setFetch((prev) => !prev);
+        updateProjectData();
       } catch (error) {
         console.log(error);
       }
@@ -80,7 +82,7 @@ const MomsClient = ({ project, setFetch, updateProjectData }) => {
 
   return (
     <>
-      <Button onClick={openModal} className="m-2">
+      <Button onClick={openModal} className="m-2  bg-blue-900">
         Add Moms Client
       </Button>
 
@@ -181,22 +183,22 @@ const MomsClient = ({ project, setFetch, updateProjectData }) => {
         </form>
       </Modal>
 
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+      <table className="w-full border-collapse table-auto rounded-lg overflow-hidden shadow-lg">
+        <thead className="text-left text-white bg-blue-900 uppercase">
           <tr>
-            <th scope="col" className="px-6 py-3">
+          <th className="py-2 px-4 font-bold hover:bg-blue-700">
               Date
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th className="py-2 px-4 font-bold hover:bg-blue-700">
               Duration
             </th>
-            <th scope="col" className="px-6 py-3">
+           <th className="py-2 px-4 font-bold hover:bg-blue-700">
               MoM Link
             </th>
-            <th scope="col" className="px-6 py-3">
+           <th className="py-2 px-4 font-bold hover:bg-blue-700">
               Comments
             </th>
-            <th scope="col" className="px-6 py-3">
+           <th className="py-2 px-4 font-bold hover:bg-blue-700">
               Action
             </th>
           </tr>

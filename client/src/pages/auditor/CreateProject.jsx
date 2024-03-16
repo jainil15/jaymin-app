@@ -142,11 +142,11 @@ const CreateProject = ({ fetch, setFetch, isOpen }) => {
             </div>
             <div className="mb-4">
               <label className="block mb-1" htmlFor="project_scope">
-                Project Scope (In Month)
+                Project Scope
               </label>
               <input
                 required
-                type="number"
+                type="text"
                 id="project_scope"
                 name="project_scope"
                 value={formData.project_scope}

@@ -14,7 +14,7 @@ const createMom = async (req, res, next) => {
         .json({ message: "Project not found for this phase" });
     }
 
-    const momDoc = await Mom.create({
+    const MomsDoc = await Mom.create({
       date,
       duration,
       link,
@@ -22,7 +22,7 @@ const createMom = async (req, res, next) => {
     });
 
     // ADD RESOURCE ID TO PROJECT TABLE
-    projectDoc?.project_mom?.push(momDoc._id);
+    projectDoc?.project_momsclients?.push(MomsDoc._id);
     await projectDoc.save();
 
     return res.status(200).json({ message: "Mom created" });
@@ -43,7 +43,7 @@ const deleteMom = async (req, res, next) => {
     }
 
     // Remove the mom with the specified mom_id
-    projectDoc.project_mom = projectDoc.project_mom.filter(
+    projectDoc.project_momsclients = projectDoc.project_momsclients.filter(
       (mom) => mom.toString() !== mom_id
     );
 
@@ -63,20 +63,20 @@ const editMom = async (req, res, next) => {
   try {
     const { date, duration, link, comments } = req.body;
     const { mom_id } = req.params;
-    const momDoc = await Mom.findOne({ _id: mom_id });
+    const MomsDoc = await Mom.findOne({ _id: mom_id });
 
-    if (!momDoc) {
+    if (!MomsDoc) {
       return res.status(409).json({ message: "Mom does not exist" });
     }
 
-    await momDoc.set({
+    await MomsDoc.set({
       date,
       duration,
       link,
       comments,
     });
 
-    await momDoc.save();
+    await MomsDoc.save();
     return res.status(200).json({ message: "Mom edited successfully" });
   } catch (error) {
     console.log(error);

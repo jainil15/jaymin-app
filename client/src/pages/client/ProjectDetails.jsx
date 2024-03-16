@@ -13,11 +13,13 @@ import {
   TabPanel,
 } from "monday-ui-react-core";
 
-
 // import components
 import Stakeholder from "../project_manager/Project/DisplayStackholder";
 import AuditHistory from "../project_manager/Project/DisplayAudithistory";
-
+import VersionHistory from "./DisplayVersionHistory";
+import ProjectUpdate from "./DisplayProjectUpdates";
+import ClientFeedback from "./clientfeeback";
+import MomsClient from "./MomsClient";
 
 function ProjectDetails({ onClose, project, updateProjectData }) {
   const [fetch, setFetch] = useState(false);
@@ -40,7 +42,7 @@ function ProjectDetails({ onClose, project, updateProjectData }) {
           <Tab>Vesion History</Tab>
           <Tab>Project Updates</Tab>
           <Tab>Client Feedback</Tab>
-          {/* <Tab>MoMs CLient</Tab> */}
+          <Tab>MoMs CLient</Tab>
         </TabList>
 
         <div className="flex gap-3 items-center cursor-pointer">
@@ -57,47 +59,40 @@ function ProjectDetails({ onClose, project, updateProjectData }) {
         <TabPanels>
           {/* PROJECT OVERVIEW COMPONENT */}
           <TabPanel>
-            <Stakeholder
-              project={project}
-            />
+            <Stakeholder project={project} />
           </TabPanel>
           {/* Audity History */}
           <TabPanel>
-            <AuditHistory
-              project={project}
-            />
+            <AuditHistory project={project} />
           </TabPanel>
 
           {/* version history */}
           <TabPanel>
-            {/* <VersionHistory project={project} /> */}
-          </TabPanel>
-          {/* updates */}
-          <TabPanel>
-            <h1>Project Updates</h1>
-            {/* <ProjectUpdate
-              project={project}
-              setFetch={setFetch}
-              updateProjectData={updateProjectData}
-            /> */}
+            <VersionHistory project={project} />
           </TabPanel>
 
-          {/* STAKEHOLDER COMPONENT */}
-          
+          {/* updates */}
+          <TabPanel>
+            <ProjectUpdate project={project} setFetch={setFetch} />
+          </TabPanel>
+
 
           {/* client feedback */}
           <TabPanel>
-            <h1>Client Feedback</h1>
+            <ClientFeedback
+              project={project}
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
+            />
           </TabPanel>
 
-          {/* momsclient */}
-          {/* <TabPanel>
+           <TabPanel>
             <MomsClient
               project={project}
               setFetch={setFetch}
               updateProjectData={updateProjectData}
             />
-          </TabPanel> */}
+          </TabPanel> 
         </TabPanels>
       </TabsContext>
     </div>

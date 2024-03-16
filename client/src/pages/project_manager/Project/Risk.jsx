@@ -90,7 +90,7 @@ const Risk = ({ project, setFetch, updateProjectData }) => {
   return (
     <>
       <Button onClick={openModal} className="m-2">
-        + Add Risk
+         Add Risk
       </Button>
 
       <Modal

@@ -104,13 +104,6 @@ const ProjectSchema = new mongoose.Schema(
       },
     ],
 
-    project_feeback: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "ClientFeedback",
-      },
-    ],
-
     project_resources: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -141,6 +134,13 @@ const ProjectSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "VersionHistory",
+      },
+    ],
+      // client feedback
+    project_clientFeedback: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ClientFeedback",
       },
     ],
   },

@@ -23,7 +23,7 @@ const customStyles = {
 
 Modal.setAppElement("#root"); // replace with your app's id
 
-function EditMomsClient({ mom, setFetch }) {
+function EditMomsClient({ mom, setFetch , updateProjectData}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     date: mom.date,
@@ -52,6 +52,7 @@ function EditMomsClient({ mom, setFetch }) {
           toast.success(res.data.message);
           setFetch((prev) => !prev);
           closeModal();
+          updateProjectData();
         }
       });
     } catch (err) {

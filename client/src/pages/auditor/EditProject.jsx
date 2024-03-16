@@ -49,6 +49,13 @@ function EditProject({ project, setFetch }) {
     setIsModalOpen(false);
   };
 
+  const handleModalClick = (e) => {
+    // Check if the clicked element is the modal background
+    if (e.target === e.currentTarget) {
+      closeModal();
+    }
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -71,6 +78,22 @@ function EditProject({ project, setFetch }) {
     }
   }
 
+  const formStyle = {
+    width: "33%",
+    padding: "2rem",
+    backgroundColor: "#fff",
+    borderRadius: "5px",
+    boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
+  };
+
+  const headerStyle = {
+    fontSize: "1.5rem",
+    fontWeight: "bold", // Make the header text bold
+    marginBottom: "1rem",
+  };
+
+  
+
   return (
     <>
       <div
@@ -81,13 +104,12 @@ function EditProject({ project, setFetch }) {
         <BiEdit className="w-5 h-5" />
       </div>
       {isModalOpen && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-blue-500 bg-opacity-30 backdrop-filter backdrop-blur-md">
-          <div style={{ width: "33%" }}>
-            <form
-              className="bg-white text-black rounded-md shadow-lg p-7 flex flex-col gap-2"
-              onSubmit={updateProject}
-            >
-              <div className="text-xl mb-4">Edit Project</div>
+        <div
+          className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-blue-500 bg-opacity-30 backdrop-filter backdrop-blur-md"
+          onClick={handleModalClick} // Close modal when clicked on the background
+        >
+          <div style={formStyle}>
+            <form className="flex flex-col gap-2" onSubmit={updateProject}>
               {/* Form fields */}
               <div className="w-full">
                 <label className="mb-1" htmlFor="project_name">
@@ -103,7 +125,6 @@ function EditProject({ project, setFetch }) {
                   className="w-full border rounded-md py-2 px-3"
                 />
               </div>
-              {/* Add other form fields */}
               <div className="mb-4 w-full">
                 <label className=" mb-1" htmlFor="project_desc">
                   Project Description
@@ -130,6 +151,7 @@ function EditProject({ project, setFetch }) {
                   className={"w-full border rounded-md py-2 px-3"}
                 />
               </div>
+
               <div className="mb-4 w-full">
                 <label className=" mb-1" htmlFor="project_stack">
                   Project Stack
@@ -172,7 +194,6 @@ function EditProject({ project, setFetch }) {
                 </select>
               </div>
 
-              {/* add for projectmanager email */}
               <div className="mb-4 w-full">
                 <label className="block mb-1" htmlFor="project_manager_email">
                   Project Manager Email
@@ -191,6 +212,26 @@ function EditProject({ project, setFetch }) {
                       {email}
                     </option>
                   ))}
+                </select>
+              </div>
+
+              <div className="mb-4 w-full">
+                <label className="block mb-1" htmlFor="project_status">
+                  Project Status
+                </label>
+                <select
+                  required
+                  id="project_status"
+                  name="project_status"
+                  value={formData.project_status}
+                  onChange={handleChange}
+                  className="w-full border rounded-md py-2 px-3"
+                >
+                  <option value="">Select</option>
+                  <option value="In progress">In progress</option>
+                  <option value="Complete">Completed</option>
+                  <option value="On Time">On Time</option>
+                  <option value="Delay">On hold</option>
                 </select>
               </div>
 

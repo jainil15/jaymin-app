@@ -24,6 +24,7 @@ import Stakeholder from "./Project/DisplayStackholder";
 import AuditHistory from "./Project/DisplayAudithistory";
 import TeamPhase from "./Project/Team";
 import MomsClient from "./Project/MomsClient";
+import ClientFeedback from "./Project/clientfeeback";
 
 function ProjectDetails({ onClose, project, updateProjectData }) {
   const [fetch, setFetch] = useState(false);
@@ -55,8 +56,6 @@ function ProjectDetails({ onClose, project, updateProjectData }) {
         </TabList>
 
         <div className="flex gap-3 items-center cursor-pointer">
-          <h1 className="font-bold">Project Name: {project.project_name}</h1>
-
           <div
             className="flex text-center justify-content-between items-center"
             onClick={onClose}
@@ -102,7 +101,7 @@ function ProjectDetails({ onClose, project, updateProjectData }) {
             />
           </TabPanel>
 
-            {/* <h1>Resource</h1> */}
+          {/* <h1>Resource</h1> */}
           <TabPanel>
             <Resource
               project={project}
@@ -155,7 +154,11 @@ function ProjectDetails({ onClose, project, updateProjectData }) {
           </TabPanel>
 
           <TabPanel>
-            <h1>Client Feedback</h1>
+            <ClientFeedback
+              project={project}
+              setFetch={setFetch}
+              updateProjectData={updateProjectData}
+            />
           </TabPanel>
         </TabPanels>
       </TabsContext>

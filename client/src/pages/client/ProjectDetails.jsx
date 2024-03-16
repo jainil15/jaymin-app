@@ -46,7 +46,6 @@ function ProjectDetails({ onClose, project, updateProjectData }) {
         </TabList>
 
         <div className="flex gap-3 items-center cursor-pointer">
-          <h1 className="font-bold">Project Name: {project.project_name}</h1>
 
           <div
             className="flex text-center justify-content-between items-center"

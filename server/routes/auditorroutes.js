@@ -6,7 +6,6 @@ const stackholderController = require("../controllers/stackholderController");
 const auditHistoryController = require("../controllers/auditHistoryController");
 const matrixController = require("../controllers/matrixController");
 const versionHistoryController = require("../controllers/versionHistoryController");
-const {pdfdownloadcontroller} = require("../controllers/pdfdownloadcontroller");
 
 const router = express.Router();
 
@@ -121,9 +120,7 @@ router.put(
   editVersionHistory
 );
 
-// routes for pdf
-const {downloadpdf} = require("../controllers/pdfdownloadcontroller");
-router.get("/download-pdf/:project_id", downloadpdf);
+
 
 
 // r

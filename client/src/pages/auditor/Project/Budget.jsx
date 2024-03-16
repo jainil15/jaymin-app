@@ -2,8 +2,26 @@ import axios from "axios";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Button } from "monday-ui-react-core";
+import { Button, Loader } from "monday-ui-react-core";
 import EditBudget from "./EditBudget";
+import Modal from 'react-modal';
+
+// Styles for the modal
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: '#f0f0f0',
+    borderRadius: '10px',
+    padding: '20px'
+  }
+};
+
+Modal.setAppElement('#root') // replace with your app's id
 
 const Budget = ({ project, setFetch, updateProjectData }) => {
   const [formData, setFormData] = useState({
@@ -81,70 +99,72 @@ const Budget = ({ project, setFetch, updateProjectData }) => {
         Add Budget
       </button>
 
-      {isModalOpen && (
-        <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white text-black rounded-md shadow-lg p-7 flex flex-col justify-center items-center gap-2">
-            <div className="text-xl mb-4">Add Budget</div>
-            <div className="w-full">
-              <label className="mb-1" htmlFor="type">
-                Type
-              </label>
-              <select
-                required
-                id="type"
-                name="type"
-                value={formData.type}
-                onChange={handleChange}
-                className="w-full border rounded-md py-2 px-3"
-              >
-                <option value="">Select</option>
-                <option value="Fixed Budget">Fixed Budget</option>
-                <option value="Monthly">Monthly</option>
-              </select>
-            </div>
-            <div className="w-full">
-              <label className="mb-1" htmlFor="duration">
-                Duration
-              </label>
-              <input
-                required
-                type="number"
-                id="duration"
-                name="duration"
-                min="0"
-                value={formData.duration}
-                onChange={handleChange}
-                className="w-full border rounded-md py-2 px-3"
-              />
-            </div>
-            <div className="w-full">
-              <label className="mb-1" htmlFor="budgetedHours">
-                Budgeted Hours
-              </label>
-              <input
-                required
-                type="number"
-                id="budgetedHours"
-                name="budgetedHours"
-                value={formData.budgetedHours}
-                min="0"
-                onChange={handleChange}
-                className="w-full border rounded-md py-2 px-3"
-              />
-            </div>
-            <div className="flex justify-center gap-2 w-full">
-              <Button onClick={closeModal}>Close</Button>
-              <Button
-                type="submit"
-                onClick={handleSubmit}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Save
-              </Button>
-            </div>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Budget Modal"
+      >
+        <form onSubmit={handleSubmit}>
+          <div className="mb-1 w-full">
+            <label className="mb-1" htmlFor="type">
+              Type
+            </label>
+            <select
+              required
+              id="type"
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+              className="w-full border rounded-md py-2 px-3"
+            >
+              <option value="">Select</option>
+              <option value="Fixed Budget">Fixed Budget</option>
+              <option value="Monthly">Monthly</option>
+            </select>
           </div>
-        </div>
-      )}
+          <div className="mb-1 w-full">
+            <label className="mb-1" htmlFor="duration">
+              Duration
+            </label>
+            <input
+              required
+              type="number"
+              id="duration"
+              name="duration"
+              min="0"
+              value={formData.duration}
+              onChange={handleChange}
+              className="w-full border rounded-md py-2 px-3"
+            />
+          </div>
+          <div className="mb-1 w-full">
+            <label className="mb-1" htmlFor="budgetedHours">
+              Budgeted Hours
+            </label>
+            <input
+              required
+              type="number"
+              id="budgetedHours"
+              name="budgetedHours"
+              value={formData.budgetedHours}
+              min="0"
+              onChange={handleChange}
+              className="w-full border rounded-md py-2 px-3"
+            />
+          </div>
+          <div className="flex justify-center gap-2 w-full">
+            <Button onClick={closeModal}>Close</Button>
+            <Button
+              type="submit"
+              onClick={handleSubmit}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Save
+            </Button>
+          </div>
+        </form>
+      </Modal>
 
       <table className="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50">

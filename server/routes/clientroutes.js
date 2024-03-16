@@ -2,6 +2,7 @@ const express = require("express");
 const { protectUser } = require("../middlewares/userProtect");
 const projectController = require("../controllers/projectController");
 const clientFeedbackController = require("../controllers/clientFeedbackController");
+const downloadAsPdf = require("../controllers/downloadAsPdf");
 
 const router = express.Router();
 
@@ -29,5 +30,11 @@ router.delete("/:project_id/:clientFeedback_id", deleteClientFeedback);
 
 //EDIT CLIENT FEEDBACK
 router.put("/:clientFeedback_id", editClientFeedback);
+
+
+// DOWNLOAD AS PDF
+
+router.get("/download-pdf/:project_id", downloadAsPdf.downloadAllContent);
+
 
 module.exports = router;

@@ -5,6 +5,7 @@ import { Button } from "monday-ui-react-core";
 import EditTeam from "./EditTeam";
 import Modal from "react-modal";
 import { Loader } from "monday-ui-react-core";
+import axios from "axios";
 
 Modal.setAppElement("#root");
 
@@ -41,6 +42,7 @@ const Team = ({ project, setFetch, updateProjectData }) => {
         `/projectmanager/create-team/${project._id}`,
         formData
       );
+      console.log("Response from server:", response); // Add this line for logging
       if (response.status === 200) {
         toast.success("Team Created successfully ");
         setFetch((prev) => !prev);
@@ -55,13 +57,14 @@ const Team = ({ project, setFetch, updateProjectData }) => {
         updateProjectData();
       }
     } catch (err) {
-      if (err.response.status === 409) {
+      if (err.response && err.response.status === 409) {
         toast.error(err.response.data.message);
+      } else {
+        console.log("Error:", err); // Add this line for logging
       }
-      console.log(err);
     }
   };
-
+  
   async function handleDelete(team_id) {
     const confirmDelete = window.confirm("Do you want to delete?");
     if (confirmDelete) {

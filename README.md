@@ -1,6 +1,6 @@
 # Customer Success Platform
 
-Welcome to the Promact Customer Success Platform! This platform is designed to streamline your customer success operations and enhance your interactions with clients. Below are the steps to set up and run the project locally, along with an overview of the project structure and technologies used.
+Welcome to the Promact Customer Success Platform! Our platform is designed to streamline your customer success operations and enhance your interactions with clients. Below, you'll find a comprehensive guide on how to set up and run the project locally, along with an overview of the project structure and the technologies we've employed.
 
 ## Setup Guide
 
@@ -13,7 +13,7 @@ Welcome to the Promact Customer Success Platform! This platform is designed to s
 
 ### Backend Setup
 
-1. **Navigate to Backend folder:**
+1. **Navigate to the Backend folder:**
    ```
    cd server
    ```
@@ -22,7 +22,6 @@ Welcome to the Promact Customer Success Platform! This platform is designed to s
    ```
    npm install
    ```
-   
 
 3. **Start the Backend Server:**
    ```
@@ -31,16 +30,16 @@ Welcome to the Promact Customer Success Platform! This platform is designed to s
 
 ### Frontend Setup
 
-1. **Navigate to Frontend folder:**
+1. **Navigate to the Frontend folder:**
    ```
    cd client
    ```
-   
+
 2. **Install Dependencies:**
    ```
    npm install
    ```
-   
+
 3. **Start the Frontend Server:**
    ```
    npm start
@@ -54,7 +53,7 @@ The project is structured as follows:
 
 - **Main Folder:** Contains `client` and `server` folders.
   
-- **Client Folder:** Houses all frontend code.
+- **Client Folder:** Contains all frontend code.
   
 - **Server Folder:** Contains all backend code.
 
@@ -79,5 +78,34 @@ The Customer Success Platform aims to optimize customer success operations by pr
 - **Communication Tools:** Facilitate seamless communication with clients through integrated messaging features.
   
 - **Analytics Dashboard:** Gain insights into customer satisfaction and engagement metrics through interactive dashboards.
+
+## Role of the Customer Success Platform
+
+### Functionality
+
+- **Role Based Management:**
+  - **Admin Role:**
+    - **Credentials:**
+      - Email: iamjay1820@gmail.com
+      - Password: 1234@Jay
+    - Full access to create/update/read/delete all projects and sections.
+    - Manage users (all stakeholders).
+  
+  - **Auditor Role:**
+    - **Credentials:**
+      - Email: kingthestar111@gmail.com
+      - Password: 1234@Abcd
+    - Register using Microsoft credentials via Auth0.
+    - Access project management features.
+    - Assign project managers.
+    - Add stakeholders and view platform for all projects.
+  
+  - **Project Manager Role:**
+    - Register using Microsoft credentials via Auth0.
+    - Manage content for assigned projects.
+    - Save and submit updates for assigned projects.
+  
+  - **Other Stakeholders:**
+    - View customer success platform for assigned projects.
 
 With the Customer Success Platform, enhance your customer relationships and drive business growth through efficient and personalized client management. Start using the platform today to elevate your customer success efforts!

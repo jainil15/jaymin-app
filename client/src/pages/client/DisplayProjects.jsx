@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FiEye, FiDownload } from "react-icons/fi";
-import { toast, ToastContainer } from 'react-toastify'; // Import toast functionalities and container
+import { toast, ToastContainer } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
 
 function DisplayProjects({ fetch, setFetch, onViewMore, clientEmail }) {

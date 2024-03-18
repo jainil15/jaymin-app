@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EditProject from "./EditProject";
 import { FiEye, FiDownload, FiTrash2 } from "react-icons/fi";
@@ -77,6 +77,7 @@ function DisplayProjects({ fetch, setFetch, onViewMore }) {
 
   return (
     <div className="overflow-hidden shadow-lg sm:rounded-lg bg-white">
+      <ToastContainer />
       {projects?.length > 0 ? (
         <table className="min-w-full table-auto border-collapse border border-gray-200">
           <thead>

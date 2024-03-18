@@ -109,3 +109,7 @@ The Customer Success Platform aims to optimize customer success operations by pr
     - View customer success platform for assigned projects.
 
 With the Customer Success Platform, enhance your customer relationships and drive business growth through efficient and personalized client management. Start using the platform today to elevate your customer success efforts!
+
+### Project Graph - Adddition Feature not mentioned in the Requirement
+
+ we've implemented a project graph feature to provide users with visual representations of project data. The project graph offers insights into various aspects of project management, such as project status distribution, project manager workload, and project progress over time. With this feature, users can quickly assess project performance and make informed decisions to ensure successful project outcomes.

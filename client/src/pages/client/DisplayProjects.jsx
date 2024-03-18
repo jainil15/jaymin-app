@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "react-toastify/dist/ReactToastify.css";
 import { FiEye, FiDownload } from "react-icons/fi";
+import { toast, ToastContainer } from 'react-toastify'; // Import toast functionalities and container
+import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
 
 function DisplayProjects({ fetch, setFetch, onViewMore, clientEmail }) {
   const [projects, setProjects] = useState([]);
@@ -10,48 +11,53 @@ function DisplayProjects({ fetch, setFetch, onViewMore, clientEmail }) {
   useEffect(() => {
     async function fetchData() {
       try {
+        // Fetch projects from API
         const response = await axios.get("/client/display-projects");
         console.log("Projects from API:", response.data);
 
-        // Filter projects based on project_manager_email
+        // Filter projects based on client's email
         const filteredProjects = response.data.filter(
           (project) => project.client_email === clientEmail
         );
 
         console.log("Filtered Projects:", filteredProjects);
-        setProjects(filteredProjects);
+        setProjects(filteredProjects); // Set filtered projects
       } catch (error) {
         console.error("Error fetching projects:", error);
       }
     }
-    fetchData();
-  }, [fetch, clientEmail]);
+    fetchData(); // Fetch data on component mount
+  }, [fetch, clientEmail]); // Trigger useEffect when fetch or clientEmail changes
 
   const formatCreatedAt = (createdAt) => {
     const date = new Date(createdAt);
     const formattedDate = `${date.getDate()}/${
       date.getMonth() + 1
     }/${date.getFullYear()}`;
-    return formattedDate;
+    return formattedDate; // Format created date
   };
 
   const download = async (project_id) => {
-    setLoading(true);
+    setLoading(true); // Set loading state to true
     try {
+      toast.info("PDF download in progress..."); // Display informational toast message
+      // Request PDF download
       const response = await axios.get(`/client/download-pdf/${project_id}`, {
         responseType: "arraybuffer",
       });
-
+  
       const pdfBlob = new Blob([response.data], { type: "application/pdf" });
-
-      saveAs(pdfBlob, "output.pdf");
-      setLoading(false);
+  
+      saveAs(pdfBlob, "output.pdf"); // Save downloaded PDF
+      setLoading(false); // Set loading state to false
+      toast.success("PDF downloaded successfully"); // Display success toast message
     } catch (error) {
       console.error("Error converting to PDF:", error);
-      setLoading(false);
+      setLoading(false); // Set loading state to false
+      toast.error("Error converting to PDF"); // Display error toast message
     }
   };
-
+  
   const getStatusColor = (status) => {
     switch (status) {
       case "On hold":
@@ -69,6 +75,7 @@ function DisplayProjects({ fetch, setFetch, onViewMore, clientEmail }) {
 
   return (
     <div className="overflow-hidden shadow-lg sm:rounded-lg bg-white">
+      <ToastContainer /> {/* Container for toast messages */}
       {projects?.length > 0 ? (
         <table className="min-w-full table-auto border-collapse border border-gray-200">
           <thead>
@@ -134,7 +141,7 @@ function DisplayProjects({ fetch, setFetch, onViewMore, clientEmail }) {
                     >
                       <FiEye />
                     </button>
-                    {/* add for downalod */}
+                    {/* Add for download */}
                     <button
                       className="w-4 mr-2 transform hover:text-red-500 hover:scale-110"
                       onClick={() => download(project._id)}

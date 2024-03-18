@@ -1,83 +1,60 @@
+// Importing required modules
 const puppeteer = require("puppeteer");
 const Project = require("../models/projectModel");
-const { generateProjectHtml } = require("./generateProjectHtml");
+const { ProjectHtml } = require("./ProjectHtml");
 
+// Function to download all content
 const downloadAllContent = async (req, res) => {
+  // Extract project_id from request parameters
+  const { project_id } = req.params;
+
   try {
-    const { project_id } = req.params;
+    // Fetch the project document from the database
+    const projectDoc = await Project.find({ _id: project_id })
+      .populate("project_risks")
+      .populate("project_sprints")
+      .populate("project_audit_history")
+      .populate("project_operational_matrix")
+      .populate("project_financial_matrix")
+      .populate("project_technical_matrix")
+      .populate("project_version_history");
 
-    // const projectDoc = await Project.find({ _id: project_id })
-    //   .populate("project_budget")
-    //   .populate("project_risks")
-    //   .populate("project_phases")
-    //   .populate("project_sprints")
-    //   .populate("project_stackholder")
-    //   .populate("project_audit_history")
-    //   .populate("project_operational_matrix")
-    //   .populate("project_financial_matrix")
-    //   .populate("project_technical_matrix")
-    //   .populate("project_version_history")
-    //   .populate("project_users");
+    // If the project does not exist, return an error response
+    if (!projectDoc) {
+      return res.status(409).json({ message: "Project does not exist" });
+    }
 
-    // if (!projectDoc) {
-    //   return res.status(409).json({ message: "Project does not exists" });
-    // }
+    // Generate HTML content dynamically using ProjectHtml function
+    const htmlContent = ProjectHtml(projectDoc);
 
-  
-      // Create a browser instance
-      const browser = await puppeteer.launch();
-      // Create a new page
-      const page = await browser.newPage();
+    // Create a new browser instance using Puppeteer
+    const browser = await puppeteer.launch();
+    // Create a new page in the browser
+    const page = await browser.newPage();
 
-      const htmlContent = `
-      <html>
-      <head>
-          <title>Audit History Table</title>
-      </head>
-      <body>
-          <table border="1">
-              <tr>
-                  <th>Date of Audit</th>
-                  <th>Reviewed By</th>
-                  <th>Status Reviewed</th>
-                  <th>Section</th>
-                  <th>Comment/Queries</th>
-                  <th>Action Items</th>
-              </tr>
-              <!-- You can add more rows with data here -->
-              <tr>
-                  <td>Example Date</td>
-                  <td>Example Reviewer</td>
-                  <td>Example Status</td>
-                  <td>Example Section</td>
-                  <td>Example Comment/Query</td>
-                  <td>Example Action Item</td>
-              </tr>
-          </table>
-      </body>
-      </html>
-      `;
+    // Set the content of the page with the dynamically generated HTML
+    await page.setContent(htmlContent);
 
-      // Set the content of the page
-      await page.setContent(htmlContent);
+    // Generate a PDF from the page content
+    const pdf = await page.pdf({ format: "A4", printBackground: true });
 
-      // Download the PDF
-      const pdf = await page.pdf({ format: "A4", printBackground: true });
+    // Close the browser instance
+    await browser.close();
 
-      // Close the browser instance
-      await browser.close();
+    // Set the response headers
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Length": pdf.length,
+    });
 
-      // Send the PDF as a response
-      res.set({
-        "Content-Type": "application/pdf",
-        "Content-Length": pdf.length,
-      });
-      res.send(pdf);
-    
+    // Send the PDF as a response
+    res.send(pdf);
   } catch (error) {
-    console.error("Error converting HTML to PDF:", error);
-    res.status(500).send("Error converting HTML to PDF");
+    // Log the error and send an error response if something goes wrong
+    console.error("Error in downloadAllContent:", error);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
 
+// Export the function
 module.exports = { downloadAllContent };

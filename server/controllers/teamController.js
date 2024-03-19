@@ -1,5 +1,5 @@
-const Project = require("../models/projectModel");
-const Team = require("../models/teamModel");
+const Project = require("../models/projectModel.js");
+const Team = require("../models/teamModel.js");
 
 // CREATE TEAM
 const createTeam = async (req, res) => {

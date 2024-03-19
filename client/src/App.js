@@ -13,7 +13,7 @@ import PmDashboard from "./pages/project_manager/Pmdashboard";
 import Projectdetilas from './pages/auditor/ProjectDetails';
 import "./App.css";
 
-axios.defaults.baseURL = 'http://localhost:4004';
+axios.defaults.baseURL = 'http://4.240.109.61:3000';
 axios.defaults.withCredentials = true;
 
 function App() {

@@ -1,5 +1,5 @@
-const Project = require("../models/projectModel");
-const Milestone = require("../models/MlieStoneModel");
+const Project = require("../models/projectModel.js");
+const Milestone = require("../models/MlieStoneModel.js");
 
 
 // CREATE MILESTONE

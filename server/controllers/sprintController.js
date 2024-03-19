@@ -1,5 +1,5 @@
-const Project = require("../models/projectModel");
-const Sprint = require("../models/sprintModel");
+const Project = require("../models/projectModel.js");
+const Sprint = require("../models/sprintModel.js");
 
 // CREATE RISK
 const createSprint = async (req, res, next) => {

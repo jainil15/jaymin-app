@@ -1,5 +1,5 @@
-const Project = require("../models/projectModel");
-const Resource = require("../models/resourcemodel");
+const Project = require("../models/projectModel.js");
+const Resource = require("../models/resourcemodel.js");
 
 // CREATE RESOURCE
 const createResource = async (req, res, next) => {

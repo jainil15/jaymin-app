@@ -23,8 +23,9 @@ dotenv.config();
 
 // Define constants
 const PORT = process.env.PORT || 4004;
+const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:3000";
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: CLIENT_URL,
   credentials: true,
   optionsSuccessStatus: 200,
 };
@@ -91,4 +92,3 @@ connectDB()
     );
   })
   .catch((error) => console.error("Error connecting to MongoDB:", error));
-

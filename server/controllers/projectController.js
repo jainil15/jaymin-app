@@ -1,11 +1,11 @@
 const nodemailer = require("nodemailer");
-const Project = require("../models/projectModel");
-const Budget = require("../models/budgetModel");
-const Momsclient = require("../models/momsclientmodel");
-const ProjectUpdates = require("../models/projectupdateModel");
-const Resource = require("../models/resourcemodel");
-const Team = require("../models/teamModel");
-const ClientFeedback = require("../models/clientFeedbackModel");
+const Project = require("../models/projectModel.js");
+const Budget = require("../models/budgetModel.js");
+const Momsclient = require("../models/momsclientmodel.js");
+const ProjectUpdates = require("../models/projectupdateModel.js");
+const Resource = require("../models/resourcemodel.js");
+const Team = require("../models/teamModel.js");
+const ClientFeedback = require("../models/clientfeedbackmodel.js");
 
 // CREATE PROJECT
 const createProject = async (req, res, next) => {
@@ -86,7 +86,7 @@ const createProject = async (req, res, next) => {
 const displayProjects = async (req, res, next) => {
   try {
     const projects = await Project.find({})
-     .populate("project_momsclients")
+      .populate("project_momsclients")
       .populate("project_resources")
       .populate("project_projectUpdates")
       .populate("project_team")
@@ -139,7 +139,7 @@ const editProject = async (req, res, next) => {
       project_status,
     } = req.body;
 
-    console.log(req.body);  
+    console.log(req.body);
 
     const projectDoc = await Project.findById(project_id);
 
@@ -172,7 +172,7 @@ const fetchOneProject = async (req, res, next) => {
   const { id } = req.params;
   try {
     const projectDoc = await Project.findById(id)
-    .populate("project_momsclients")
+      .populate("project_momsclients")
       .populate("project_resources")
       .populate("project_projectUpdates")
       .populate("project_team")
@@ -198,7 +198,6 @@ const fetchOneProject = async (req, res, next) => {
     return res.json({ message: `Error occurred ${error}` });
   }
 };
-
 
 module.exports = {
   createProject,

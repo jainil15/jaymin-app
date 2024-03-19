@@ -1,7 +1,7 @@
-const Project = require("../models/projectModel");
-const OperationalMatrix = require("../models/operationalMatrixModel");
-const FinancialMatrix = require("../models/financialMatrixModel");
-const TechnicalMatrix = require("../models/technicalMatrixModel");
+const Project = require("../models/projectModel.js");
+const OperationalMatrix = require("../models/operationalMatrixModel.js");
+const FinancialMatrix = require("../models/financialMatrixModel.js");
+const TechnicalMatrix = require("../models/technicalMatrixModel.js");
 
 // CREATE Operational Matrix
 const createOperationalMatrix = async (req, res, next) => {

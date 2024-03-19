@@ -1,5 +1,5 @@
-const Risk = require("../models/riskModel");
-const Project = require("../models/projectModel");
+const Risk = require("../models/riskModel.js");
+const Project = require("../models/projectModel.js");
 
 // CREATE RISK
 const createRisk = async (req, res, next) => {

@@ -1,5 +1,5 @@
-const Project = require("../models/projectModel");
-const VersionHistory = require("../models/versionHistoryModel");
+const Project = require("../models/projectModel.js");
+const VersionHistory = require("../models/versionHistoryMOdel.js");
 
 // CREATE VERSION HISTORY
 const createVersionHistory = async (req, res, next) => {

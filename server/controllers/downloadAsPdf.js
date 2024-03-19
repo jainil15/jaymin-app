@@ -1,7 +1,7 @@
 // Importing required modules
 const puppeteer = require("puppeteer");
-const Project = require("../models/projectModel");
-const { ProjectHtml } = require("./ProjectHtml");
+const Project = require("../models/projectModel.js");
+const { ProjectHtml } = require("./ProjectHtml.js");
 
 // Function to download all content
 const downloadAllContent = async (req, res) => {

@@ -1,5 +1,5 @@
-const Project = require("../models/projectModel");
-const Mom = require("../models/momsclientmodel");
+const Project = require("../models/projectModel.js");
+const Mom = require("../models/momsclientmodel.js");
 
 // CREATE MOM
 const createMom = async (req, res, next) => {

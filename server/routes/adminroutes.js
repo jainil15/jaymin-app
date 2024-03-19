@@ -1,7 +1,7 @@
 // adminroutes.js
 const express = require("express");
 const router = express.Router();
-const { protectUser } = require("../middlewares/userProtect");
+const { protectUser } = require("../middlewares/userProtect.js");
 
 const {
   addUser,
@@ -12,7 +12,7 @@ const {
   getUserByRole,
   assignProject,
   unassignProject,
-} = require("../controllers/admincontroller");
+} = require("../controllers/admincontroller.js");
 
 /* ROUTES */
 router.post("/adduser", protectUser, addUser);

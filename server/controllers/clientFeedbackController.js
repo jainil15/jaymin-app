@@ -1,5 +1,5 @@
-const Project = require("../models/projectModel");
-const ClientFeedback = require("../models/clientFeedbackModel");
+const Project = require("../models/projectModel.js");
+const ClientFeedback = require("../models/clientfeedbackmodel.js");
 
 // CREATE CLIENT FEEDBACK
 const createClientFeedback = async (req, res, next) => {

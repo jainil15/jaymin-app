@@ -1,12 +1,12 @@
 const express = require("express");
-const RiskController = require("../controllers/riskController");
-const SprintController = require("../controllers/sprintController");
-const MileStoneController = require("../controllers/MileStoneController");
-const ProjectController = require("../controllers/projectController");
-const ResourceController = require("../controllers/Resourcecontroller");
-const momsclientController = require("../controllers/momsclientController");
-const projectupdateController = require("../controllers/projectupdateController");
-const teamController = require("../controllers/teamController");
+const RiskController = require("../controllers/riskController.js");
+const SprintController = require("../controllers/sprintController.js");
+const MileStoneController = require("../controllers/MileStoneController.js");
+const ProjectController = require("../controllers/projectController.js");
+const ResourceController = require("../controllers/Resourcecontroller.js");
+const momsclientController = require("../controllers/momsclientController.js");
+const projectupdateController = require("../controllers/projectUpdateController.js");
+const teamController = require("../controllers/teamController.js");
 
 const router = express.Router();
 

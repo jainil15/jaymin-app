@@ -1,11 +1,11 @@
 const express = require("express");
-const { protectUser } = require("../middlewares/userProtect");
-const auditorController = require("../controllers/projectController");
-const budgetController = require("../controllers/budgetController");
-const stackholderController = require("../controllers/stackholderController");
-const auditHistoryController = require("../controllers/auditHistoryController");
-const matrixController = require("../controllers/matrixController");
-const versionHistoryController = require("../controllers/versionHistoryController");
+const { protectUser } = require("../middlewares/userProtect.js");
+const auditorController = require("../controllers/projectController.js");
+const budgetController = require("../controllers/budgetController.js");
+const stackholderController = require("../controllers/stackholderController.js");
+const auditHistoryController = require("../controllers/auditHistoryController.js");
+const matrixController = require("../controllers/matrixController.js");
+const versionHistoryController = require("../controllers/versionHistoryController.js");
 
 const router = express.Router();
 

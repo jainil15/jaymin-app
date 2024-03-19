@@ -1,5 +1,5 @@
-const Project = require("../models/projectModel");
-const AuditHistory = require("../models/auditHistoryModel");
+const Project = require("../models/projectModel.js");
+const AuditHistory = require("../models/auditHistoryModel.js");
 const nodemailer = require("nodemailer");
 
 // Function to send email

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FiEye, FiDownload } from "react-icons/fi";
-import { toast, ToastContainer } from 'react-toastify'; 
-import 'react-toastify/dist/ReactToastify.css'; // Import toast styles
+import { toast, ToastContainer } from "react-toastify";
+import { saveAs } from "file-saver";
+import "react-toastify/dist/ReactToastify.css"; // Import toast styles
 
 function DisplayProjects({ fetch, setFetch, onViewMore, clientEmail }) {
   const [projects, setProjects] = useState([]);
@@ -39,15 +40,16 @@ function DisplayProjects({ fetch, setFetch, onViewMore, clientEmail }) {
 
   const download = async (project_id) => {
     setLoading(true); // Set loading state to true
+
     try {
       toast.info("PDF download in progress..."); // Display informational toast message
       // Request PDF download
       const response = await axios.get(`/client/download-pdf/${project_id}`, {
         responseType: "arraybuffer",
       });
-  
+
       const pdfBlob = new Blob([response.data], { type: "application/pdf" });
-  
+
       saveAs(pdfBlob, "output.pdf"); // Save downloaded PDF
       setLoading(false); // Set loading state to false
       toast.success("PDF downloaded successfully"); // Display success toast message
@@ -57,7 +59,7 @@ function DisplayProjects({ fetch, setFetch, onViewMore, clientEmail }) {
       toast.error("Error converting to PDF"); // Display error toast message
     }
   };
-  
+
   const getStatusColor = (status) => {
     switch (status) {
       case "On hold":

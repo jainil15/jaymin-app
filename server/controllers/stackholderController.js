@@ -1,5 +1,5 @@
-const Project = require("../models/projectModel");
-const StackHolder = require("../models/stackHolderModel");
+const Project = require("../models/projectModel.js");
+const StackHolder = require("../models/stackHolderModel.js");
 
 // CREATE STACKHOLDER
 const createStackholder = async (req, res, next) => {

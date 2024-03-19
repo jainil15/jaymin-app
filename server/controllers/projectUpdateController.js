@@ -1,5 +1,5 @@
-const Project = require("../models/projectModel");
-const ProjectUpdate = require("../models/projectupdateModel");
+const Project = require("../models/projectModel.js");
+const ProjectUpdate = require("../models/projectupdateModel.js");
 
 // CREATE PROJECT UPDATE
 const createProjectUpdate = async (req, res, next) => {
